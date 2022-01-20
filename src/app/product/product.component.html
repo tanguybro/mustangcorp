@@ -1,16 +1,6 @@
-<!-- <div class="u-container-style u-list-item u-repeater-item">
-    <div class="u-container-layout u-similar-container u-valign-bottom u-container-layout-3">
-      <img src="{{ product?.image }}" class="u-expanded-width u-image u-image-default u-image-3">
-      <h5 class="u-custom-font u-font-ubuntu u-text u-text-default u-text-6"></h5>
-      <h3 class="u-custom-font u-font-ubuntu u-text u-text-default u-text-7"></h3>
-    </div>
-</div> -->
-
-<div class="col-4">
-  <div id="{{ product?.id }}" class="card">
+<div id="{{ product?.id }}" class="card border-dark mb-3 col-4">
   <h3 class="card-header">{{ product?.name }}</h3>
   <div class="card-body">
     <img src="{{ product?.image }}" class="product-image">
     <h4 class="text-center mb-0 mt-2">{{ product?.price }} MTC</h4>
-  </div>
 </div>
