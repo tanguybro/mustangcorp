@@ -21,7 +21,7 @@ export const PRODUCTS: Product[] = [
     },
     {
         id: 4,
-        name: 'Manga Dofus tome 1 à 7',
+        name: 'Manga Dofus 1 à 7',
         image: '../assets/manga_dofus.jpg',
         price: 75,
     }
