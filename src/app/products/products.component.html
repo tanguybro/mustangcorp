@@ -1,7 +1,7 @@
 <section class="section-products">
     <div class="container">
-        <div class="row card-group">
-            <app-product *ngFor="let p of products" [product]="p" class="card border-dark mb-3 mt-4 px-0 col-4"></app-product>
+        <div class="row row-cols-4">
+            <app-product *ngFor="let p of products" [product]="p" class="card border-dark mt-4 px-0 col"></app-product>
         </div>
     </div>
 </section>
