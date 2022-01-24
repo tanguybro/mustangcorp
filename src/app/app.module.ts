@@ -6,17 +6,24 @@ import { AppComponent } from './app.component';
 import { ProductsComponent } from './products/products.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProductComponent } from './product/product.component';
+import { AuthModule } from '@auth0/auth0-angular';
+import { AuthButtonComponent } from './auth-button/auth-button.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductsComponent,
     NavbarComponent,
-    ProductComponent
+    ProductComponent,
+    AuthButtonComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AuthModule.forRoot({
+      domain: 'dev-56pvpr1t.us.auth0.com',
+      clientId: 'i1vKQ6DF5q7RTyB1TbumFZgOtzTqN3bd'
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
