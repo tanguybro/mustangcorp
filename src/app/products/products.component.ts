@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PRODUCTS } from '../products';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-products',
@@ -10,7 +11,7 @@ export class ProductsComponent implements OnInit {
   
   products = PRODUCTS;
   
-  constructor() { }
+  constructor(public auth: AuthService) { }
 
   ngOnInit(): void {
   }
