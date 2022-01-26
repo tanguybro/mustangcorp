@@ -5,7 +5,7 @@ export const PRODUCTS: Product[] = [
         id: 1,
         name: 'Ecouteurs',
         image: '../assets/ecouteurs.jpg',
-        price: 25,
+        price: 20,
     },
     {
         id: 2,
@@ -17,7 +17,7 @@ export const PRODUCTS: Product[] = [
         id: 3,
         name: 'Jeu de cartes',
         image: '../assets/cartes.jpg',
-        price: 20,
+        price: 25,
     },
     {
         id: 4,
@@ -48,5 +48,17 @@ export const PRODUCTS: Product[] = [
         name: 'Manga Dofus 1 à 7',
         image: '../assets/manga_dofus.jpg',
         price: 65,
+    },
+    {
+        id: 9,
+        name: 'Clope',
+        image: '../assets/clope.jpg',
+        price: 10,
+    },
+    {
+        id: 10,
+        name: '1 CBD',
+        image: '../assets/cbd.jpg',
+        price: 25,
     },
   ];
