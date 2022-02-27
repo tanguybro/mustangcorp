@@ -1,12 +1,9 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="navbar-brand ms-3" *ngIf="auth.user$ | async as user">Solde : {{ balance }} MTC</div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="navbar-brand ms-3" *ngIf="auth.user$ | async as user">{{ balance }} MTC ({{ user.email }})</div>
     <div class="container-fluid row">
         <div class="justify-content-center text-center ms-5">
-            <h2>MustangCoin Shop</h2>
+            <h2 class="text-light">MustangCoin Shop</h2>
         </div>
     </div>
-    <span id="name" class="navbar-text" *ngIf="auth.user$ | async as user">
-        {{ user.email }}
-    </span>
     <span class="navbar-text me-4"><app-auth-button></app-auth-button></span>
 </nav>
