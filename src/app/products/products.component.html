@@ -1,5 +1,5 @@
 <section class="section-products">
     <div class="container row" *ngIf="auth.user$ | async as user">
-        <app-product *ngFor="let p of products" [product]="p" class="card border-dark mt-2 w-50"></app-product>
+        <app-product *ngFor="let p of products" [product]="p" class="card border-dark mt-2 w-50 px-0"></app-product>
     </div>
 </section>

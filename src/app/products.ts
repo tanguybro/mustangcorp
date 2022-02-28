@@ -61,4 +61,16 @@ export const PRODUCTS: Product[] = [
         icon: 'cannabis',
         price: 25,
     },
+    {
+        id: 11,
+        name: 'Montre',
+        icon: 'clock',
+        price: 30,
+    },
+    {
+        id: 12,
+        name: 'Sucette au CBD',
+        icon: 'candy-cane',
+        price: 25,
+    },
   ];
