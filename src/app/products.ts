@@ -58,7 +58,7 @@ export const PRODUCTS: Product[] = [
     {
         id: 10,
         name: 'Enceintes',
-        icon: 'speakers',
+        icon: 'volume-high',
         price: 70,
     }
 ];
