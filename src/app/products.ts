@@ -9,7 +9,7 @@ export const PRODUCTS: Product[] = [
     },
     {
         id: 2,
-        name: 'Bouteille mystère',
+        name: 'Restes de tise',
         icon: 'wine-bottle',
         price: 12,
     },
@@ -33,44 +33,32 @@ export const PRODUCTS: Product[] = [
     },
     {
         id: 6,
-        name: 'Bière',
-        icon: 'beer-mug-empty',
-        price: 8,
-    },
-    {
-        id: 7,
-        name: 'Stylo',
-        icon: 'pen',
-        price: 5,
-    },
-    {
-        id: 8,
         name: 'Manga Dofus 1 à 7',
         icon: 'book',
         price: 65,
     },
     {
-        id: 9,
+        id: 7,
         name: 'Clope',
         icon: 'smoking',
         price: 10,
     },
     {
-        id: 10,
-        name: '1 CBD',
-        icon: 'cannabis',
-        price: 25,
-    },
-    {
-        id: 11,
+        id: 8,
         name: 'Montre',
         icon: 'clock',
         price: 30,
     },
     {
-        id: 12,
+        id: 9,
         name: 'Sucette au CBD',
         icon: 'candy-cane',
         price: 25,
     },
-  ];
+    {
+        id: 10,
+        name: 'Enceintes',
+        icon: 'speakers',
+        price: 70,
+    }
+];
