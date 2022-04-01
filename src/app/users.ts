@@ -10,5 +10,8 @@ export const USERS  = new Map<string, number>([
     ['inesa9399@gmail.com', 1],
     ['jodantigny@gmail.com', 5],
     ['losegoabel@gmail.com', 15],
-    ['eloise.samueli78@gmail.com', 6]
+    ['eloise.samueli78@gmail.com', 6],
+    ['onlsusie@gmail.com', 5],
+    ['lea12robert@gmail.com', 5],
+    ['morgan_lyon69@hormail.com', 10]
 ]);
