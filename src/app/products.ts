@@ -9,9 +9,9 @@ export const PRODUCTS: Product[] = [
     },
     {
         id: 2,
-        name: 'Restes de tise',
-        icon: 'wine-bottle',
-        price: 12,
+        name: '?',
+        icon: '',
+        price: 0,
     },
     {
         id: 3,
