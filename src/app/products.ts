@@ -3,15 +3,15 @@ import { Product } from './product';
 export const PRODUCTS: Product[] = [
     {
         id: 1,
-        name: 'Ecouteurs',
-        icon: 'headphones',
-        price: 20,
+        name: 'Clope',
+        icon: 'smoking',
+        price: 10,
     },
     {
         id: 2,
-        name: '?',
-        icon: '',
-        price: 0,
+        name: '0,0001 BTC',
+        icon: 'bitcoin',
+        price: 10,
     },
     {
         id: 3,
@@ -39,9 +39,9 @@ export const PRODUCTS: Product[] = [
     },
     {
         id: 7,
-        name: 'Clope',
-        icon: 'smoking',
-        price: 10,
+        name: 'Ecouteurs',
+        icon: 'headphones',
+        price: 20,
     },
     {
         id: 8,
