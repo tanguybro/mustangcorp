@@ -10,7 +10,7 @@ export const PRODUCTS: Product[] = [
     {
         id: 2,
         name: '0,0001 BTC',
-        icon: 'bitcoin',
+        icon: 'bitcoin-sign',
         price: 10,
     },
     {
