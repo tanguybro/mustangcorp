@@ -15,9 +15,9 @@ export const PRODUCTS: Product[] = [
     },
     {
         id: 3,
-        name: 'Jeu de cartes',
-        icon: 'heart',
-        price: 30,
+        name: 'Bonbons',
+        icon: 'candy-cane',
+        price: 15,
     },
     {
         id: 4,
