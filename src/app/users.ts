@@ -1,7 +1,7 @@
 export const USERS  = new Map<string, number>([
     ['tanguy.brouassin@hotmail.fr', 1000],
     ['julien.massoni@hotmail.fr', 20],
-    ['clement_gorce@hotmail.fr', 45],
+    ['clement_gorce@hotmail.fr', 95],
     ['axel.raza75@hotmail.fr', 30],
     ['romain.tricot15@gmail.com', 10],
     ['antoinejojopoto@gmail.com', 10],
@@ -9,7 +9,7 @@ export const USERS  = new Map<string, number>([
     ['eilynn.chalmel14@gmail.com', 5],
     ['inesa9399@gmail.com', 51],
     ['jodantigny@gmail.com', 15],
-    ['losegoabel@gmail.com', 25],
+    ['losegoabel@gmail.com', 75],
     ['eloise.samueli78@gmail.com', 6],
     ['onlsusie@gmail.com', 5],
     ['lea12robert@gmail.com', 15],
