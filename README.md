@@ -1,4 +1,4 @@
-# Mustangcoin
+# Mustangcorp
 
 An online shop for MustangCoin cryptocurrency.
 
