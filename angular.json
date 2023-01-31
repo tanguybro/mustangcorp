@@ -97,5 +97,7 @@
             }
         }
     },
-    "defaultProject": "mustangcorp"
+    "cli": {
+      "analytics": false
+    }
 }
