@@ -1,18 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Product } from '../product';
+import { Component, Input, OnInit } from '@angular/core';
+import { Product } from '@shared/models/product';
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.sass']
+    selector: 'app-product',
+    templateUrl: './product.component.html',
+    styleUrls: ['./product.component.sass'],
 })
 export class ProductComponent implements OnInit {
+    @Input() product: Product | undefined;
 
-  @Input() product: Product | undefined;
+    constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+    ngOnInit(): void {}
 }
