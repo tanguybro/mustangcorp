@@ -1,23 +1,38 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { SharedModule as SharedModulePrimeNg } from 'primeng/api';
+import { MenuModule } from 'primeng/menu';
+import { MenubarModule } from 'primeng/menubar';
 
-import { AuthModule } from '@auth0/auth0-angular';
-import { AuthButtonComponent } from '@shared/auth-button/auth-button.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { ProductComponent } from './product/product.component';
-import { ProductsComponent } from './products/products.component';
+import { GamesListComponent } from './games/games-list/games-list.component';
+import { MenuComponent } from './menu/menu.component';
+import { ProductComponent } from './shop/product/product.component';
+import { ProductsComponent } from './shop/products/products.component';
+import { UsersListComponent } from './users/users-list/users-list.component';
 
 @NgModule({
-    declarations: [AppComponent, ProductsComponent, NavbarComponent, ProductComponent, AuthButtonComponent],
+    declarations: [
+        AppComponent,
+        MenuComponent,
+        ProductsComponent,
+        ProductComponent,
+        GamesListComponent,
+        UsersListComponent,
+    ],
     imports: [
         BrowserModule,
         AppRoutingModule,
-        AuthModule.forRoot({
-            domain: 'dev-56pvpr1t.us.auth0.com',
-            clientId: 'i1vKQ6DF5q7RTyB1TbumFZgOtzTqN3bd',
-        }),
+        HttpClientModule,
+        MenubarModule,
+        MenuModule,
+        SharedModulePrimeNg,
+        // AuthModule.forRoot({
+        //     domain: 'dev-56pvpr1t.us.auth0.com',
+        //     clientId: 'i1vKQ6DF5q7RTyB1TbumFZgOtzTqN3bd',
+        // }),
     ],
     providers: [],
     bootstrap: [AppComponent],
