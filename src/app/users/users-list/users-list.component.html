@@ -1,8 +1,4 @@
-<p-table
-    #table
-    [value]="users"
-    styleClass="p-datatable-striped p-datatable-gridlines mb-2"
->
+<p-table #table [value]="users" styleClass="p-datatable-striped p-datatable-gridlines mb-2">
     <ng-template pTemplate="caption">
         <div class="flex">
             <h3>Utilisateurs</h3>
@@ -10,15 +6,15 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th *ngFor="let col of columns"  class="text-center">
+            <th *ngFor="let col of columns" class="text-center">
                 {{ col.header }}
             </th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-entity>
+    <ng-template pTemplate="body" let-user>
         <tr>
             <td *ngFor="let col of columns">
-                {{ entity[col.field] }}
+                {{ user[col.field] }}
             </td>
         </tr>
     </ng-template>
