@@ -24,7 +24,7 @@ export class MenuComponent implements OnInit {
             },
             {
                 label: 'Jeux',
-                icon: 'pi pi-info',
+                icon: 'pi pi-history',
                 routerLink: 'games',
             },
         ];

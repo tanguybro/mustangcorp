@@ -1,3 +1,6 @@
 <p-menubar [model]="items">
-    <a href="/"><img src="assets/icon.png" style="width: 5%" /></a>
+    <ng-template pTemplate="start">
+        <a href="/"><img src="assets/icon.png" height="40" class="mr-2"/></a>
+    </ng-template>
+    
 </p-menubar>

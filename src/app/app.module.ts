@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { SharedModule as SharedModulePrimeNg } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
+import { TableModule } from 'primeng/table';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,14 +15,7 @@ import { ProductsComponent } from './shop/products/products.component';
 import { UsersListComponent } from './users/users-list/users-list.component';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        MenuComponent,
-        ProductsComponent,
-        ProductComponent,
-        GamesListComponent,
-        UsersListComponent,
-    ],
+    declarations: [AppComponent, MenuComponent, ProductsComponent, ProductComponent, GamesListComponent, UsersListComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
@@ -29,6 +23,7 @@ import { UsersListComponent } from './users/users-list/users-list.component';
         MenubarModule,
         MenuModule,
         SharedModulePrimeNg,
+        TableModule,
         // AuthModule.forRoot({
         //     domain: 'dev-56pvpr1t.us.auth0.com',
         //     clientId: 'i1vKQ6DF5q7RTyB1TbumFZgOtzTqN3bd',
