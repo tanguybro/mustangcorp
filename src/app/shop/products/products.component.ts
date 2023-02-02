@@ -14,7 +14,7 @@ export class ProductsComponent implements OnInit {
     constructor(private http: HttpClient) {}
 
     ngOnInit(): void {
-        this.getAll().subscribe((data: Product[]) => (this.products = data));
+        this.getAll().subscribe((data: Product[]) => (this.products = data.sort((a, b) => a.price - b.price)));
     }
 
     private getAll(): Observable<Product[]> {

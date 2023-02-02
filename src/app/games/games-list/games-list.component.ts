@@ -56,8 +56,8 @@ export class GamesListComponent implements OnInit {
             },
             {
                 game: 'Escape game',
-                date: '?',
-                winner: '?',
+                date: '22/08/2020',
+                winner: 'Susie, Julien, Momo, Antoine',
             },
             {
                 game: 'Tournoi échecs',
@@ -67,16 +67,16 @@ export class GamesListComponent implements OnInit {
             {
                 game: 'Tournoi basket',
                 date: '25/10/2020',
-                winner: 'Lea R, Abel, Romain',
+                winner: 'Lea R, Abel, Tanguy',
             },
             {
                 game: 'Tournoi Yu-Gi-Oh 1',
-                date: '?',
+                date: '20/10/2018',
                 winner: 'Julien',
             },
             {
                 game: 'Tournoi Yu-Gi-Oh 2',
-                date: '?',
+                date: '27/07/2019',
                 winner: 'Tanguy',
             },
         ];

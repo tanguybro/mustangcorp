@@ -21,7 +21,7 @@ export class UsersListComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.getAll().subscribe((data: User[]) => (this.users = data));
+        this.getAll().subscribe((data: User[]) => (this.users = data.sort((a, b) => b.mtc - a.mtc)));
     }
 
     private getAll(): Observable<User[]> {
