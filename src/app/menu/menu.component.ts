@@ -18,7 +18,7 @@ export class MenuComponent implements OnInit {
                 routerLink: '/',
             },
             {
-                label: 'Utilisateurs',
+                label: 'Joueurs',
                 icon: 'pi pi-users',
                 routerLink: 'users',
             },
