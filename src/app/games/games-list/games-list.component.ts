@@ -20,6 +20,11 @@ export class GamesListComponent implements OnInit {
   ngOnInit(): void {
     this.games = [
       {
+        game: "Mustang Rétrogaming",
+        date: "26/10/2024",
+        winner: "Tanguy, Axel, Alex, Emma",
+      },
+      {
         game: "Mustang Viking",
         date: "02/03/2024",
         winner: "Clément, Romain, Jules, Susie, Noah",
