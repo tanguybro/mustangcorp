@@ -17,6 +17,7 @@ export class UsersListComponent implements OnInit {
         this.columns = [
             { field: 'name', header: 'Nom' },
             { field: 'mtc', header: 'MTC' },
+            { field: 'victory', header: 'Victoires' },
         ];
     }
 
