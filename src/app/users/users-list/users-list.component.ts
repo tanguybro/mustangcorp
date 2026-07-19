@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { environment } from '@environments/environment';
+import { TableColumn } from '@shared/models/table-column';
 import { User } from '@shared/models/user';
 import { Observable } from 'rxjs';
 
@@ -11,7 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class UsersListComponent implements OnInit {
     users: User[];
-    columns: any[];
+    columns: TableColumn[];
 
     constructor(private http: HttpClient) {
         this.columns = [

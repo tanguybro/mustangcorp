@@ -26,10 +26,6 @@ import { UsersListComponent } from './users/users-list/users-list.component';
         SharedModulePrimeNg,
         TableModule,
         DataViewModule,
-        // AuthModule.forRoot({
-        //     domain: 'dev-56pvpr1t.us.auth0.com',
-        //     clientId: 'i1vKQ6DF5q7RTyB1TbumFZgOtzTqN3bd',
-        // }),
     ],
     providers: [],
     bootstrap: [AppComponent],

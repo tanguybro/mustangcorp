@@ -5,6 +5,7 @@
       "baseUrl": "./",
       "outDir": "./dist",
       "forceConsistentCasingInFileNames": true,
+      "skipLibCheck": true,
       "strict": true,
       "strictPropertyInitialization": false,
       "noPropertyAccessFromIndexSignature": false,

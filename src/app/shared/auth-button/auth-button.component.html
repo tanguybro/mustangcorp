@@ -1,9 +1,0 @@
-<ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
-    <button class="btn btn-primary" (click)="auth.logout({ returnTo: document.location.origin })">
-      Déconnexion
-    </button>
-</ng-container>
-
-<ng-template #loggedOut>
-    <button class="btn btn-primary" (click)="auth.loginWithRedirect()">Consulter mon solde</button>
-</ng-template>

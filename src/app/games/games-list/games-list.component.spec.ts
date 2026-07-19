@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TableModule } from 'primeng/table';
 
 import { GamesListComponent } from './games-list.component';
 
@@ -8,6 +9,7 @@ describe('GamesListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [ TableModule ],
       declarations: [ GamesListComponent ]
     })
     .compileComponents();
