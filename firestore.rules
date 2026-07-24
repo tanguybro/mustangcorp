@@ -53,5 +53,15 @@ service cloud.firestore {
       allow read: if true;
       allow write: if false;
     }
+
+    match /seasons/{seasonId} {
+      allow read: if true;
+      allow write: if false; // Console Firestore uniquement (ouverture/clôture de saison)
+
+      match /classement/{userEmail} {
+        allow read: if true;
+        allow write: if false; // photo figée, écrite une fois à la clôture de saison
+      }
+    }
   }
 }

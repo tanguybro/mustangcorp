@@ -1,5 +1,6 @@
 import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   trigger,
@@ -23,9 +24,10 @@ import {
   runTransaction,
 } from '@angular/fire/firestore';
 import { Auth, User } from '@angular/fire/auth';
-import { Observable, combineLatest } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FREE_REGISTRATION_EMAIL } from '../shared/constants';
+import { Season, SeasonService } from '../shared/season.service';
 
 // --- Interfaces ---
 interface UserProfile {
@@ -46,6 +48,7 @@ interface Event {
   Max: number;
   Description: string;
   Gagnants?: string[];
+  Saison?: string;
 }
 
 interface EnrichedEvent extends Event {
@@ -56,13 +59,15 @@ interface EnrichedEvent extends Event {
 interface EventsData {
   upcoming: EnrichedEvent[];
   past: EnrichedEvent[];
+  seasonName: string;
+  isCurrentSeason: boolean;
 }
 
 // --- Component ---
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
   animations: [
@@ -87,12 +92,18 @@ export class CalendarComponent implements OnInit {
   private readonly auth = inject(Auth);
   private readonly router = inject(Router);
   private readonly cd = inject(ChangeDetectorRef);
+  private readonly seasonService = inject(SeasonService);
 
   public eventsData$!: Observable<EventsData>;
+  public seasons$: Observable<Season[]> = this.seasonService.seasons$;
   public currentUser: User | null = null;
   public registrationErrors: Record<string, string | null> = {};
   public selectedEventId: string | null = null;
   public isTogglingRegistration: Record<string, boolean> = {};
+
+  // '' = saison en cours (défaut)
+  private selectedSeasonId$ = new BehaviorSubject<string>('');
+  public selectedSeasonId = '';
 
   ngOnInit(): void {
     this.auth.onAuthStateChanged((user) => {
@@ -101,6 +112,10 @@ export class CalendarComponent implements OnInit {
     });
 
     this.loadEventsData();
+  }
+
+  selectSeason(seasonId: string): void {
+    this.selectedSeasonId$.next(seasonId);
   }
 
   private loadEventsData(): void {
@@ -114,19 +129,36 @@ export class CalendarComponent implements OnInit {
       UserProfile[]
     >;
 
-    this.eventsData$ = combineLatest([events$, users$]).pipe(
-      map(([events, users]) => this.mapEventsWithUserNames(events, users))
+    this.eventsData$ = combineLatest([
+      events$,
+      users$,
+      this.selectedSeasonId$,
+      this.seasonService.currentSeason$,
+      this.seasons$,
+    ]).pipe(
+      map(([events, users, selectedSeasonId, currentSeason, seasons]) =>
+        this.mapEventsWithUserNames(
+          events,
+          users,
+          selectedSeasonId,
+          currentSeason,
+          seasons
+        )
+      )
     );
   }
 
   private mapEventsWithUserNames(
     events: Event[],
-    users: UserProfile[]
+    users: UserProfile[],
+    selectedSeasonId: string,
+    currentSeason: Season | null,
+    seasons: Season[]
   ): EventsData {
     const userMap = new Map(users.map((user) => [user.id!, user.Nom]));
     const now = new Date();
 
-    const enrichedEvents: EnrichedEvent[] = events.map((event) => ({
+    const enrich = (event: Event): EnrichedEvent => ({
       ...event,
       ParticipantNames: (event.Participants || []).map(
         (email) => userMap.get(email) || email.split('@')[0]
@@ -134,12 +166,31 @@ export class CalendarComponent implements OnInit {
       WinnerNames: (event.Gagnants || []).map(
         (email) => userMap.get(email) || email.split('@')[0]
       ),
-    }));
+    });
 
-    const upcoming = enrichedEvents.filter((e) => e.Date.toDate() >= now);
-    const past = enrichedEvents.filter((e) => e.Date.toDate() < now).reverse();
+    const activeSeasonId = selectedSeasonId || currentSeason?.id || null;
+    const isCurrentSeason = !selectedSeasonId || activeSeasonId === currentSeason?.id;
+    const seasonName =
+      seasons.find((s) => s.id === activeSeasonId)?.Nom ?? '';
 
-    return { upcoming, past };
+    const seasonEvents = activeSeasonId
+      ? events.filter((e) => e.Saison === activeSeasonId)
+      : events;
+
+    if (isCurrentSeason) {
+      const enrichedEvents = seasonEvents.map(enrich);
+      const upcoming = enrichedEvents.filter((e) => e.Date.toDate() >= now);
+      const past = enrichedEvents
+        .filter((e) => e.Date.toDate() < now)
+        .reverse();
+      return { upcoming, past, seasonName, isCurrentSeason };
+    }
+
+    // Saison passée : tout est déjà terminé, pas d'événements à venir.
+    const past = seasonEvents
+      .map(enrich)
+      .sort((a, b) => b.Date.toMillis() - a.Date.toMillis());
+    return { upcoming: [], past, seasonName, isCurrentSeason };
   }
 
   toggleDetails(eventId: string | undefined): void {

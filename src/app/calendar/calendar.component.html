@@ -1,5 +1,19 @@
 <div class="calendar-container">
+<div class="season-picker">
+  <select
+    class="season-select"
+    [(ngModel)]="selectedSeasonId"
+    (ngModelChange)="selectSeason($event)"
+  >
+    <option value="">Saison en cours</option>
+    <option *ngFor="let season of seasons$ | async" [value]="season.id">
+      {{ season.Nom }}
+    </option>
+  </select>
+</div>
+
 <ng-container *ngIf="eventsData$ | async as data; else loading">
+  <ng-container *ngIf="data.isCurrentSeason">
   <header class="calendar-header">
     <h1>Événements à venir</h1>
   </header>
@@ -69,9 +83,11 @@
       </div>
     </div>
   </ng-container>
+  </ng-container>
 
   <header class="calendar-header past-header">
-    <h1>Événements passés</h1>
+    <h1 *ngIf="data.isCurrentSeason">Événements passés</h1>
+    <h1 *ngIf="!data.isCurrentSeason">Jeux de la {{ data.seasonName }}</h1>
   </header>
 
   <ng-container *ngIf="data.past.length > 0; else noPastEvents">

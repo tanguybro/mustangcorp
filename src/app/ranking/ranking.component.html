@@ -1,34 +1,51 @@
 <div class="ranking-container">
   <header class="ranking-header">
     <h1>Classement</h1>
-    <p>Saison 1</p>
+    <select
+      class="season-select"
+      [(ngModel)]="selectedSeasonId"
+      (ngModelChange)="selectSeason($event)"
+    >
+      <option value="">Saison en cours</option>
+      <option *ngFor="let season of seasons$ | async" [value]="season.id">
+        {{ season.Nom }}
+      </option>
+    </select>
   </header>
 
-  <ng-container *ngIf="{ 
-    users: rankedUsers$ | async, 
-    me: currentUser$ | async 
-  } as data; else loading">
-  
-    <div class="ranking-list" *ngIf="data.users && data.users.length > 0; else noUsers">
-      <div class="user-row" 
-           *ngFor="let user of data.users" 
-           [class.is-current-user]="user.id === data.me?.email">
-        
+  <ng-container
+    *ngIf="{
+      ranking: rankingData$ | async,
+      me: currentUser$ | async
+    } as data; else loading"
+  >
+    <p class="season-label" *ngIf="data.ranking?.seasonName as name">
+      {{ name }}
+    </p>
+
+    <div
+      class="ranking-list"
+      *ngIf="data.ranking && data.ranking.users.length > 0; else noUsers"
+    >
+      <div
+        class="user-row"
+        *ngFor="let user of data.ranking!.users"
+        [class.is-current-user]="user.id === data.me?.email"
+      >
         <div class="user-position">
           <span *ngIf="user.rank === 1" class="medal gold">🥇</span>
           <span *ngIf="user.rank === 2" class="medal silver">🥈</span>
           <span *ngIf="user.rank === 3" class="medal bronze">🥉</span>
           <span *ngIf="user.rank > 3">{{ user.rank }}</span>
         </div>
-  
+
         <div class="user-name">
           {{ user.Nom }}
         </div>
-  
+
         <div class="user-score">{{ user.Points }} Points</div>
       </div>
     </div>
-  
   </ng-container>
 
   <ng-template #loading>
