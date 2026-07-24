@@ -1,20 +1,26 @@
 <div class="shop-container">
   <header class="shop-header">
     <h1>Boutique</h1>
+    <p class="mtc-balance-line" *ngIf="userMtc$ | async as mtc">
+      Solde MTC : <strong>{{ mtc }}</strong>
+    </p>
   </header>
 
   <section class="mtc-purchase-section">
-    <h2 class="section-title">Acheter des MTC</h2>
+    <h2 class="section-title">Déposer de l'euro</h2>
+    <p class="section-subtitle">
+      Payez via PayPal ou Lydia, votre solde en euro est crédité manuellement
+      dès réception (utilisé pour vous inscrire aux jeux).
+    </p>
     <div class="packs-container">
       <div class="mtc-pack">
         <div class="pack-header">
-          <span class="pack-amount">10 MTC</span>
+          <span class="pack-amount">5 €</span>
         </div>
         <div class="pack-body">
-          <span class="pack-price">1,00 €</span>
           <div class="payment-links">
             <a
-              href="https://www.paypal.com/paypalme/tanguybro/1EUR"
+              href="https://www.paypal.com/paypalme/tanguybro/5EUR"
               target="_blank"
               class="payment-link paypal"
             >
@@ -40,15 +46,13 @@
       </div>
 
       <div class="mtc-pack popular">
-        <div class="pack-badge">-5%</div>
         <div class="pack-header">
-          <span class="pack-amount">50 MTC</span>
+          <span class="pack-amount">10 €</span>
         </div>
         <div class="pack-body">
-          <span class="pack-price">4,75 €</span>
           <div class="payment-links">
             <a
-              href="https://www.paypal.com/paypalme/tanguybro/4.75EUR"
+              href="https://www.paypal.com/paypalme/tanguybro/10EUR"
               target="_blank"
               class="payment-link paypal"
             >
@@ -74,15 +78,13 @@
       </div>
 
       <div class="mtc-pack">
-        <div class="pack-badge">-10%</div>
         <div class="pack-header">
-          <span class="pack-amount">100 MTC</span>
+          <span class="pack-amount">20 €</span>
         </div>
         <div class="pack-body">
-          <span class="pack-price">9,00 €</span>
           <div class="payment-links">
             <a
-              href="https://www.paypal.com/paypalme/tanguybro/9EUR"
+              href="https://www.paypal.com/paypalme/tanguybro/20EUR"
               target="_blank"
               class="payment-link paypal"
             >

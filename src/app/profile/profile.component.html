@@ -60,6 +60,27 @@
         </ng-container>
       </div>
 
+      <!-- Section de l'historique des inscriptions passées -->
+      <div class="user-events-section">
+        <h2>Mes inscriptions passées</h2>
+        <ng-container *ngIf="pastRegisteredEvents$ | async as events">
+          <div
+            *ngIf="events.length > 0; else noPastRegisteredEvents"
+            class="event-list"
+          >
+            <div *ngFor="let event of events" class="event-card">
+              <span class="event-card-name">{{ event.Nom }}</span>
+              <span class="event-card-date">{{
+                event.Date.toDate() | date : 'd MMM y'
+              }}</span>
+            </div>
+          </div>
+          <ng-template #noPastRegisteredEvents>
+            <p class="info-text">Vous n'êtes inscrit à aucun jeu passé</p>
+          </ng-template>
+        </ng-container>
+      </div>
+
       <!-- NOUVEAU : Section des victoires -->
       <div class="user-events-section">
         <h2>Mon palmarès</h2>

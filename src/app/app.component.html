@@ -7,7 +7,7 @@
 
 <!-- Cette section s'affiche uniquement si un profil utilisateur est chargé -->
 <div class="header-user-info" *ngIf="userProfile$ | async as profile">
-  <span class="mtc-balance">{{ profile.MTC }} MTC</span>
+  <span class="mtc-balance">{{ profile.Solde || 0 }} €</span>
 </div>
 </header>
 

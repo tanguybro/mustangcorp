@@ -35,7 +35,13 @@
   margin: 0;
 }
 
-/* --- STYLES POUR LA SECTION D'ACHAT DE MTC --- */
+.mtc-balance-line {
+  margin-top: 8px;
+  font-size: 1rem;
+  color: var(--text-color-secondary);
+}
+
+/* --- STYLES POUR LA SECTION DE DÉPÔT D'EURO --- */
 .mtc-purchase-section {
   max-width: 900px;
   margin: 0 auto calc(var(--spacing-unit) * 3) auto;
@@ -51,6 +57,13 @@
   font-weight: 600;
   color: var(--text-color-primary);
   margin-bottom: calc(var(--spacing-unit) * 1.5);
+}
+
+.section-subtitle {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-color-secondary);
+  margin: calc(var(--spacing-unit) * -1) 0 var(--spacing-unit) 0;
 }
 
 .packs-container {
@@ -79,18 +92,6 @@
   border-width: 2px;
 }
 
-.pack-badge {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: #28a745;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
 .pack-header {
   padding: var(--spacing-unit);
   background-color: #f8f9fa;
@@ -104,14 +105,6 @@
 
 .pack-body {
   padding: var(--spacing-unit);
-}
-
-.pack-price {
-  display: block;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text-color-secondary);
-  margin-bottom: var(--spacing-unit);
 }
 
 .payment-links {

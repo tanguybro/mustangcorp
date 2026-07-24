@@ -11,6 +11,7 @@ import {
 import { Auth, authState, User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { RANKING_EXCLUDED_EMAIL } from '../shared/constants';
 
 interface UserProfile {
   id?: string;
@@ -50,7 +51,7 @@ export class RankingComponent {
     this.rankedUsers$ = users$.pipe(
       map((users) => {
         const filteredUsers = users.filter(
-          (user) => user.id !== 'tanguy.brouassin@gmail.com'
+          (user) => user.id !== RANKING_EXCLUDED_EMAIL
         );
 
         let rank = 0;

@@ -21,12 +21,14 @@ import {
 } from '@angular/fire/firestore';
 import { Observable, of, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
+import { RANKING_EXCLUDED_EMAIL } from '../shared/constants';
 
 // --- INTERFACES ---
 interface UserProfile {
   id?: string;
   Nom: string;
   MTC: number;
+  Solde: number;
   Points: number;
 }
 
@@ -57,6 +59,7 @@ export class ProfileComponent {
   public user$: Observable<User | null> = authState(this.auth);
   public userProfileWithRank$: Observable<FullUserProfile | null>;
   public registeredEvents$: Observable<Event[]>;
+  public pastRegisteredEvents$: Observable<Event[]>;
   public wonEvents$: Observable<Event[]>;
 
   email = '';
@@ -90,7 +93,11 @@ export class ProfileComponent {
               console.error("Profil non trouvé pour l'email:", user.email);
               return null;
             }
-            const rank = rankedUsers.findIndex((u) => u.id === profile.id) + 1;
+            const rankableUsers = rankedUsers.filter(
+              (u) => u.id !== RANKING_EXCLUDED_EMAIL
+            );
+            const rank =
+              rankableUsers.findIndex((u) => u.id === profile.id) + 1;
             return { ...profile, rank };
           })
         );
@@ -122,6 +129,30 @@ export class ProfileComponent {
               events
                 .filter((event) => event.Date.toDate() >= new Date()) // Garde les événements futurs
                 .sort((a, b) => a.Date.toMillis() - b.Date.toMillis()) // Trie par date croissante
+          )
+        );
+      })
+    );
+
+    // Événements passés auxquels l'utilisateur était inscrit (gagnés ou non)
+    this.pastRegisteredEvents$ = this.user$.pipe(
+      switchMap((user) => {
+        if (!user || !user.email) return of([]);
+
+        const registeredQuery = query(
+          eventsCollectionRef,
+          where('Participants', 'array-contains', user.email)
+        );
+
+        return (
+          collectionData(registeredQuery, { idField: 'id' }) as Observable<
+            Event[]
+          >
+        ).pipe(
+          map((events) =>
+            events
+              .filter((event) => event.Date.toDate() < new Date())
+              .sort((a, b) => b.Date.toMillis() - a.Date.toMillis())
           )
         );
       })

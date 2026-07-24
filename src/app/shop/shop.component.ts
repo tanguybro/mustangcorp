@@ -5,16 +5,25 @@ import {
   Firestore,
   collection,
   collectionData,
+  doc,
+  docData,
   query,
   orderBy,
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Auth, authState } from '@angular/fire/auth';
+import { Observable, of } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
 interface Article {
   id?: string;
   Nom: string;
   Prix: number;
   Image: string;
+}
+
+interface UserProfile {
+  id?: string;
+  MTC: number;
 }
 
 @Component({
@@ -26,7 +35,9 @@ interface Article {
 })
 export class ShopComponent {
   private firestore: Firestore = inject(Firestore);
+  private auth: Auth = inject(Auth);
   articles$: Observable<Article[]>;
+  userMtc$: Observable<number | null>;
 
   constructor() {
     const articleCollection = collection(this.firestore, 'shop');
@@ -37,6 +48,16 @@ export class ShopComponent {
     this.articles$ = collectionData(q, {
       idField: 'id',
     }) as Observable<Article[]>;
+
+    this.userMtc$ = authState(this.auth).pipe(
+      switchMap((user) => {
+        if (!user?.email) return of(null);
+        const profileDocRef = doc(this.firestore, `users/${user.email}`);
+        return (docData(profileDocRef) as Observable<UserProfile | undefined>).pipe(
+          map((profile) => (profile ? Number(profile.MTC) || 0 : null))
+        );
+      })
+    );
   }
 
   /**

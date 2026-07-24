@@ -25,12 +25,14 @@ import {
 import { Auth, User } from '@angular/fire/auth';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { FREE_REGISTRATION_EMAIL } from '../shared/constants';
 
 // --- Interfaces ---
 interface UserProfile {
   id?: string;
   Nom: string;
   MTC: number;
+  Solde: number;
   Points?: number;
 }
 
@@ -152,6 +154,10 @@ export class CalendarComponent implements OnInit {
     );
   }
 
+  isRegistrationFree(): boolean {
+    return this.currentUser?.email === FREE_REGISTRATION_EMAIL;
+  }
+
   async toggleRegistration(event: Event): Promise<void> {
     const eventId = event.id;
     if (!eventId || this.isTogglingRegistration[eventId]) {
@@ -201,17 +207,25 @@ export class CalendarComponent implements OnInit {
       const userDoc = await transaction.get(userDocRef);
       if (!userDoc.exists()) throw new Error('Profil introuvable.');
 
+      // Inscription gratuite pour ce compte, aucun débit du solde.
+      if (userEmail === FREE_REGISTRATION_EMAIL) {
+        transaction.update(eventDocRef, {
+          Participants: arrayUnion(userEmail),
+        });
+        return;
+      }
+
       const userProfile = userDoc.data() as UserProfile;
 
       // Sécurité : forcer le format Nombre pour éviter les erreurs de calcul
-      const userMtc = Number(userProfile.MTC) || 0;
+      const userSolde = Number(userProfile.Solde) || 0;
       const eventPrix = Number(event.Prix) || 0;
 
-      if (userMtc < eventPrix) throw new Error('MTC insuffisant.');
+      if (userSolde < eventPrix) throw new Error('Solde insuffisant.');
 
-      const newMtcBalance = userMtc - eventPrix;
+      const newSolde = userSolde - eventPrix;
 
-      transaction.update(userDocRef, { MTC: newMtcBalance });
+      transaction.update(userDocRef, { Solde: newSolde });
       transaction.update(eventDocRef, { Participants: arrayUnion(userEmail) });
     });
   }
@@ -229,16 +243,19 @@ export class CalendarComponent implements OnInit {
     const eventDocRef = doc(this.firestore, `events/${eventId}`);
 
     await runTransaction(this.firestore, async (transaction) => {
-      const userDoc = await transaction.get(userDocRef);
-      if (userDoc.exists()) {
-        const userProfile = userDoc.data() as UserProfile;
+      // Inscription gratuite pour ce compte : rien n'a été débité, rien à rembourser.
+      if (userEmail !== FREE_REGISTRATION_EMAIL) {
+        const userDoc = await transaction.get(userDocRef);
+        if (userDoc.exists()) {
+          const userProfile = userDoc.data() as UserProfile;
 
-        // Sécurité : forcer le format Nombre pour éviter la concaténation de strings
-        const userMtc = Number(userProfile.MTC) || 0;
-        const eventPrix = Number(event.Prix) || 0;
+          // Sécurité : forcer le format Nombre pour éviter la concaténation de strings
+          const userSolde = Number(userProfile.Solde) || 0;
+          const eventPrix = Number(event.Prix) || 0;
 
-        const newMtcBalance = userMtc + eventPrix;
-        transaction.update(userDocRef, { MTC: newMtcBalance });
+          const newSolde = userSolde + eventPrix;
+          transaction.update(userDocRef, { Solde: newSolde });
+        }
       }
       transaction.update(eventDocRef, { Participants: arrayRemove(userEmail) });
     });
