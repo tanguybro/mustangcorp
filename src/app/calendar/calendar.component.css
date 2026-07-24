@@ -1,6 +1,3 @@
-/* Importation d'une police moderne */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
 /* Variables de design */
 :host {
   --primary-color: #007aff;

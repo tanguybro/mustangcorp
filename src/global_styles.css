@@ -1,5 +1,5 @@
-/* Importation de la police pour toute l'application */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+/* Importation de la police pour toute l'application (poids utilisés par tous les composants) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 /* Réinitialisation de base et définition de la police par défaut */
 body,
