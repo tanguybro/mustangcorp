@@ -1,0 +1,57 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function email() {
+      return request.auth.token.email;
+    }
+    function participants(data) {
+      return ('Participants' in data) ? data.Participants : [];
+    }
+
+    match /users/{userEmail} {
+      allow read: if true;
+
+      // Chacun ne peut modifier que son propre Solde (jamais Nom/MTC/Points),
+      // dans un sens ou l'autre, borné à 5 (prix max d'un event) par mouvement.
+      allow update: if isSignedIn()
+                    && email() == userEmail
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['Solde'])
+                    && request.resource.data.Solde is number
+                    && request.resource.data.Solde >= 0
+                    && (request.resource.data.Solde - resource.data.Solde) <= 5
+                    && (resource.data.Solde - request.resource.data.Solde) <= 5;
+
+      allow create, delete: if false; // reste : Console Firestore uniquement
+    }
+
+    match /events/{eventId} {
+      allow read: if true;
+
+      // Chacun ne peut modifier que la liste des participants, en s'ajoutant
+      // ou se retirant lui-même (rien d'autre : Gagnants/Prix/Date/Max restent
+      // Console Firestore uniquement).
+      allow update: if isSignedIn()
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['Participants'])
+                    && (
+                      (!(email() in participants(resource.data))
+                        && email() in participants(request.resource.data)
+                        && participants(request.resource.data).size() == participants(resource.data).size() + 1)
+                      ||
+                      (email() in participants(resource.data)
+                        && !(email() in participants(request.resource.data))
+                        && participants(request.resource.data).size() == participants(resource.data).size() - 1)
+                    );
+
+      allow create, delete: if false;
+    }
+
+    match /shop/{itemId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}
