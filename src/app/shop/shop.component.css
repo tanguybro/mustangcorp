@@ -1,0 +1,236 @@
+/* Importation d'une police moderne depuis Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* Variables globales pour cohérence */
+:host {
+  --primary-button-color: #3897f0;
+  --primary-button-hover-color: #2a8ae8;
+  --text-color-primary: #262626;
+  --text-color-secondary: #8e8e8e;
+  --background-color: #fafafa;
+  --card-background: #ffffff;
+  --separator-color: #dbdbdb;
+  --spacing-unit: 16px;
+  --border-radius-large: 18px;
+  --border-radius-small: 12px;
+  --transition-fast: 0.2s ease;
+  --transition-smooth: 0.3s ease;
+}
+
+/* Conteneur principal */
+.shop-container {
+  padding: var(--spacing-unit);
+  background-color: var(--background-color);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+
+.shop-header {
+  text-align: center;
+  margin-bottom: calc(var(--spacing-unit) * 2.5);
+  padding: var(--spacing-unit) 0;
+}
+
+.shop-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-color-primary);
+  margin: 0;
+}
+
+/* --- STYLES POUR LA SECTION D'ACHAT DE MTC --- */
+.mtc-purchase-section {
+  max-width: 900px;
+  margin: 0 auto calc(var(--spacing-unit) * 3) auto;
+  padding: var(--spacing-unit);
+  background-color: var(--card-background);
+  border: 1px solid var(--separator-color);
+  border-radius: var(--border-radius-large);
+}
+
+.section-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color-primary);
+  margin-bottom: calc(var(--spacing-unit) * 1.5);
+}
+
+.packs-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-unit);
+}
+
+.mtc-pack {
+  border: 1px solid var(--separator-color);
+  border-radius: var(--border-radius-small);
+  text-align: center;
+  overflow: hidden;
+  transition: transform var(--transition-smooth),
+    box-shadow var(--transition-smooth);
+  position: relative;
+}
+
+.mtc-pack:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.mtc-pack.popular {
+  border-color: var(--primary-button-color);
+  border-width: 2px;
+}
+
+.pack-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #28a745;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.pack-header {
+  padding: var(--spacing-unit);
+  background-color: #f8f9fa;
+}
+
+.pack-amount {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-color-primary);
+}
+
+.pack-body {
+  padding: var(--spacing-unit);
+}
+
+.pack-price {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-color-secondary);
+  margin-bottom: var(--spacing-unit);
+}
+
+.payment-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.payment-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: opacity var(--transition-fast);
+}
+
+.payment-link img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.payment-link:hover {
+  opacity: 0.85;
+}
+
+.payment-link.paypal {
+  background-color: #003087;
+  color: white;
+}
+.payment-link.lydia {
+  background-color: #1a1a1a;
+  color: white;
+}
+/* --- FIN DES STYLES D'ACHAT --- */
+
+/* --- STYLES POUR LA SECTION DES JEUX --- */
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: calc(var(--spacing-unit) * 1.5);
+  align-items: start;
+}
+
+.article-card {
+  background-color: var(--card-background);
+  border: 1px solid var(--separator-color);
+  border-radius: var(--border-radius-large);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow var(--transition-smooth),
+    transform var(--transition-smooth);
+}
+.article-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+}
+.article-image {
+  width: 100%;
+  height: 280px;
+  object-fit: contain;
+  padding: 8px;
+  box-sizing: border-box;
+}
+.article-content {
+  padding: var(--spacing-unit);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.article-info {
+  flex-grow: 1;
+}
+.article-name {
+  font-size: clamp(1rem, 1.1vw + 0.9rem, 1.2rem);
+  font-weight: 600;
+  color: var(--text-color-primary);
+  margin: 0 0 6px 0;
+}
+.article-price {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-color-secondary);
+  margin: 0;
+}
+.buy-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--primary-button-color);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: var(--border-radius-small);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-top: var(--spacing-unit);
+  transition: background-color var(--transition-fast),
+    transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.buy-button:hover {
+  background-color: var(--primary-button-hover-color);
+  transform: scale(1.03);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+.loading-message {
+  text-align: center;
+  color: var(--text-color-secondary);
+  font-size: 1rem;
+  padding: 40px 0;
+}

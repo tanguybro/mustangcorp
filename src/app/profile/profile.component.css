@@ -1,0 +1,208 @@
+/* Importation de la police */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap');
+
+/* --- PALETTE DE COULEURS ET VARIABLES --- */
+:host {
+  --primary-color: #007aff;
+  --danger-color: #ff3b30;
+  --background-color: #f2f2f7;
+  --card-background: #ffffff;
+  --text-primary: #1c1c1e;
+  --text-secondary: #8a8a8e;
+  --border-color: #e5e5ea;
+
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.profile-container {
+  padding: 24px;
+  background-color: var(--background-color);
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* --- EN-TÊTE DU PROFIL AMÉLIORÉ --- */
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+.profile-name {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+.profile-email {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* --- BOUTON DE DÉCONNEXION MODERNISÉ --- */
+.logout-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--card-background);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.logout-button:hover {
+  background-color: #f0f0f0;
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+/* --- GRILLE DES STATS AVEC NOUVEAU DESIGN --- */
+.profile-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.stat-card {
+  background-color: var(--card-background);
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+}
+.stat-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.stat-value {
+  display: block;
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.stat-label {
+  display: block;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+/* --- NOUVEAU : STYLES POUR LES SECTIONS D'ÉVÉNEMENTS --- */
+.user-events-section {
+  margin-top: 40px;
+}
+
+.user-events-section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.event-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.event-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--card-background);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.event-card-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.event-card-date {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* --- FORMULAIRE DE CONNEXION AMÉLIORÉ --- */
+.login-form {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 32px;
+  background-color: var(--card-background);
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+}
+.login-form h1 {
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.login-form p {
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+.login-form input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.login-form input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+}
+.login-form button {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.login-form button:hover {
+  transform: scale(1.02);
+}
+
+.error-message {
+  color: var(--danger-color);
+  background-color: rgba(255, 59, 48, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.info-text {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 20px 0;
+  background-color: var(--card-background);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}

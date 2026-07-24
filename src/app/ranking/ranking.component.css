@@ -1,0 +1,128 @@
+/* Importation de la police */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+:host {
+  --gold-color: #ffd700;
+  --silver-color: #c0c0c0;
+  --bronze-color: #cd7f32;
+  --text-color-primary: #1c1c1e;
+  --text-color-secondary: #8a8a8e;
+  --background-color: #f2f2f7;
+  --card-background: #ffffff;
+  --separator-color: #e5e5ea;
+  --spacing-unit: 16px;
+  --border-radius: 12px;
+}
+
+.ranking-container {
+  background-color: var(--background-color);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  padding: var(--spacing-unit);
+}
+
+.ranking-header {
+  text-align: center;
+  margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+.ranking-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-color-primary);
+  margin: 0;
+}
+
+.ranking-header p {
+  font-size: 1rem;
+  color: var(--text-color-secondary);
+  margin-top: 4px;
+}
+
+.ranking-list {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden; /* Pour que la bordure des enfants respecte le coin arrondi */
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-unit);
+  border-bottom: 1px solid var(--separator-color);
+  transition: background-color 0.2s ease;
+}
+
+.user-row:last-child {
+  border-bottom: none;
+}
+
+.user-row:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.user-position {
+  flex-shrink: 0;
+  width: 40px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-color-secondary);
+  text-align: center;
+}
+
+.medal {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+/* On n'applique pas de couleur de texte pour que celle de l'émoji soit utilisée */
+
+.user-name {
+  flex-grow: 1;
+  padding: 0 var(--spacing-unit);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-color-primary);
+}
+
+.user-score {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-color-primary);
+}
+
+/* Mise en évidence du podium */
+.user-row:nth-child(1) .user-name,
+.user-row:nth-child(1) .user-score {
+  font-weight: 700;
+  color: #000;
+}
+.user-row:nth-child(2) .user-name,
+.user-row:nth-child(2) .user-score {
+  font-weight: 600;
+}
+.user-row:nth-child(3) .user-name,
+.user-row:nth-child(3) .user-score {
+  font-weight: 600;
+}
+
+.info-text {
+  text-align: center;
+  color: var(--text-color-secondary);
+  font-size: 1rem;
+  padding: 40px 0;
+}
+
+/* Style pour la ligne de l'utilisateur connecté */
+.user-row.is-current-user {
+  background-color: rgba(0, 122, 255, 0.05); /* Un léger bleu très clair */
+  border-left: 4px solid #007aff; /* Une petite barre bleue sur le côté */
+}
+
+.user-row.is-current-user .user-name {
+  font-weight: 800; /* Super gras */
+  color: #007aff; /* Optionnel : mettre le nom en bleu aussi */
+}

@@ -1,28 +1,20 @@
-# Mustangcorp
+# Mustang Club
 
-An online shop for MustangCoin cryptocurrency.
+Application du Mustang Club : calendrier des soirées jeux et tournois, classement de saison, boutique de MTC (jetons du club) et récompenses, FAQ, et profil joueur (connexion via Firebase Auth).
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.3.
+Angular 18 (composants standalone) + Firebase (Auth, Firestore, Hosting).
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run `npm start` (or `ng serve`) for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `npm run build` (or `ng build`) to build the project. The build artifacts are stored in `dist/mustangclub/browser`.
 
-## Running unit tests
+## Deploy
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Run `npm run deploy` to build and deploy to Firebase Hosting (project `mustang-club-10fce`, domaine `mustangclub.fr`).
 
 ## Further help
 

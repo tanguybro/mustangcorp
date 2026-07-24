@@ -1,0 +1,20 @@
+/* Importation de la police pour toute l'application */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+
+/* Réinitialisation de base et définition de la police par défaut */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px; /* Définit la taille de police de base pour tout le site */
+  background-color: #f2f2f7; /* Couleur de fond générale */
+}
+
+/* Style pour le conteneur principal du contenu */
+/* Cette règle est la plus importante : elle empêche le contenu d'être caché par la barre de menu */
+main.main-content {
+  display: block;
+  /* On ajoute un espace en bas égal à la hauteur de la barre de navigation */
+  padding-bottom: 65px;
+}

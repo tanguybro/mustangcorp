@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+:host {
+  --text-color-primary: #1a1a1a;
+  --text-color-secondary: #555;
+  --background-color: #fafafa;
+  --card-background: #ffffff;
+  --border-color: #e6e6e6;
+  --border-radius: 14px;
+  --spacing-unit: 16px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.faq-container {
+  background-color: var(--background-color);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  padding: calc(var(--spacing-unit) * 2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.faq-header {
+  text-align: center;
+  margin-bottom: calc(var(--spacing-unit) * 2.5);
+  max-width: 700px;
+}
+
+.faq-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-color-primary);
+  margin: 0 0 10px 0;
+}
+
+.faq-header p {
+  font-size: 1.1rem;
+  color: var(--text-color-secondary);
+  margin: 0;
+}
+
+.faq-list {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit);
+}
+
+.faq-item {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.faq-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.faq-question {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-color-primary);
+  margin: 0 0 12px 0;
+}
+
+.faq-answer {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-color-secondary);
+  margin: 0;
+  white-space: pre-line;
+}

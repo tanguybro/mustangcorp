@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/mustangcorp",
+    "public": "dist/mustangclub/browser",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {

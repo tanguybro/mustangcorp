@@ -1,0 +1,103 @@
+<div class="profile-container">
+  <ng-container *ngIf="user$ | async as user; else loginForm">
+    <ng-container
+      *ngIf="userProfileWithRank$ | async as profile; else loadingProfile"
+    >
+      <div class="profile-header">
+        <div class="profile-info">
+          <h1 class="profile-name">{{ profile.Nom }}</h1>
+          <p class="profile-email">{{ user.email }}</p>
+        </div>
+        <button class="logout-button" (click)="logout()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            width="20"
+            height="20"
+          >
+            <path
+              d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"
+            ></path>
+          </svg>
+          Déconnexion
+        </button>
+      </div>
+
+      <div class="profile-stats">
+        <div class="stat-card">
+          <span class="stat-value">{{ profile.MTC }}</span>
+          <span class="stat-label">MTC</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">{{ profile.Points }}</span>
+          <span class="stat-label">Points</span>
+        </div>
+        <div class="stat-card full-width">
+          <span class="stat-value">#{{ profile.rank }}</span>
+          <span class="stat-label">Classement</span>
+        </div>
+      </div>
+
+      <!-- NOUVEAU : Section des inscriptions -->
+      <div class="user-events-section">
+        <h2>Mes inscriptions</h2>
+        <ng-container *ngIf="registeredEvents$ | async as events">
+          <div
+            *ngIf="events.length > 0; else noRegisteredEvents"
+            class="event-list"
+          >
+            <div *ngFor="let event of events" class="event-card">
+              <span class="event-card-name">{{ event.Nom }}</span>
+              <span class="event-card-date">{{
+                event.Date.toDate() | date : 'd MMM y'
+              }}</span>
+            </div>
+          </div>
+          <ng-template #noRegisteredEvents>
+            <p class="info-text">Vous n'êtes inscrit à aucun jeu</p>
+          </ng-template>
+        </ng-container>
+      </div>
+
+      <!-- NOUVEAU : Section des victoires -->
+      <div class="user-events-section">
+        <h2>Mon palmarès</h2>
+        <ng-container *ngIf="wonEvents$ | async as events">
+          <div *ngIf="events.length > 0; else noWonEvents" class="event-list">
+            <div *ngFor="let event of events" class="event-card">
+              <span class="event-card-name">{{ event.Nom }}</span>
+              <span class="event-card-date">{{
+                event.Date.toDate() | date : 'd MMM y'
+              }}</span>
+            </div>
+          </div>
+          <ng-template #noWonEvents>
+            <p class="info-text">Vous n'avez pas encore gagné de jeux</p>
+          </ng-template>
+        </ng-container>
+      </div>
+    </ng-container>
+
+    <ng-template #loadingProfile>
+      <p class="info-text">Chargement du profil...</p>
+    </ng-template>
+  </ng-container>
+
+  <ng-template #loginForm>
+    <div class="login-form">
+      <h1>Connexion</h1>
+      <p>
+        Connectez-vous pour vous inscrire aux événements et suivre vos stats.
+      </p>
+      <p *ngIf="loginError" class="error-message">{{ loginError }}</p>
+      <input [(ngModel)]="email" type="email" placeholder="Email" />
+      <input
+        [(ngModel)]="password"
+        type="password"
+        placeholder="Mot de passe"
+      />
+      <button (click)="login()">Se connecter</button>
+    </div>
+  </ng-template>
+</div>

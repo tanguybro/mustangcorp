@@ -1,0 +1,129 @@
+<div class="shop-container">
+  <header class="shop-header">
+    <h1>Boutique</h1>
+  </header>
+
+  <section class="mtc-purchase-section">
+    <h2 class="section-title">Acheter des MTC</h2>
+    <div class="packs-container">
+      <div class="mtc-pack">
+        <div class="pack-header">
+          <span class="pack-amount">10 MTC</span>
+        </div>
+        <div class="pack-body">
+          <span class="pack-price">1,00 €</span>
+          <div class="payment-links">
+            <a
+              href="https://www.paypal.com/paypalme/tanguybro/1EUR"
+              target="_blank"
+              class="payment-link paypal"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/174/174861.png"
+                alt="Logo PayPal"
+              />
+              <span>PayPal</span>
+            </a>
+            <a
+              href="https://pay.lydia.me/l?t=tanguyb5kq0"
+              target="_blank"
+              class="payment-link lydia"
+            >
+              <img
+                src="https://iphonesoft.fr/images/appstore/6475691727/lydia-icon.png"
+                alt="Logo Lydia"
+              />
+              <span>Lydia</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mtc-pack popular">
+        <div class="pack-badge">-5%</div>
+        <div class="pack-header">
+          <span class="pack-amount">50 MTC</span>
+        </div>
+        <div class="pack-body">
+          <span class="pack-price">4,75 €</span>
+          <div class="payment-links">
+            <a
+              href="https://www.paypal.com/paypalme/tanguybro/4.75EUR"
+              target="_blank"
+              class="payment-link paypal"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/174/174861.png"
+                alt="Logo PayPal"
+              />
+              <span>PayPal</span>
+            </a>
+            <a
+              href="https://pay.lydia.me/l?t=tanguyb5kq0"
+              target="_blank"
+              class="payment-link lydia"
+            >
+              <img
+                src="https://iphonesoft.fr/images/appstore/6475691727/lydia-icon.png"
+                alt="Logo Lydia"
+              />
+              <span>Lydia</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mtc-pack">
+        <div class="pack-badge">-10%</div>
+        <div class="pack-header">
+          <span class="pack-amount">100 MTC</span>
+        </div>
+        <div class="pack-body">
+          <span class="pack-price">9,00 €</span>
+          <div class="payment-links">
+            <a
+              href="https://www.paypal.com/paypalme/tanguybro/9EUR"
+              target="_blank"
+              class="payment-link paypal"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/174/174861.png"
+                alt="Logo PayPal"
+              />
+              <span>PayPal</span>
+            </a>
+            <a
+              href="https://pay.lydia.me/l?t=tanguyb5kq0"
+              target="_blank"
+              class="payment-link lydia"
+            >
+              <img
+                src="https://iphonesoft.fr/images/appstore/6475691727/lydia-icon.png"
+                alt="Logo Lydia"
+              />
+              <span>Lydia</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="section-title">Jeux</h2>
+  <div class="article-grid" *ngIf="articles$ | async as articles; else loading">
+    <div class="article-card" *ngFor="let article of articles">
+      <img class="article-image" [src]="article.Image" [alt]="article.Nom" />
+      <div class="article-content">
+        <div class="article-info">
+          <h3 class="article-name">{{ article.Nom }}</h3>
+          <p class="article-price">{{ article.Prix }} MTC</p>
+        </div>
+        <button class="buy-button" (click)="onBuyClick()">Acheter</button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <p class="loading-message">Chargement des articles...</p>
+  </ng-template>
+</div>
