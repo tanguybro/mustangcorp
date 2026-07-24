@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import {
   Firestore,
   collection,
@@ -13,6 +12,7 @@ import { BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { RANKING_EXCLUDED_EMAIL } from '../shared/constants';
 import { Season, SeasonService } from '../shared/season.service';
+import { SeasonSwitcherComponent } from '../shared/season-switcher/season-switcher.component';
 
 interface UserProfile {
   id?: string;
@@ -24,16 +24,10 @@ export interface RankedUserProfile extends UserProfile {
   rank: number;
 }
 
-interface RankingData {
-  users: RankedUserProfile[];
-  seasonName: string;
-  isCurrentSeason: boolean;
-}
-
 @Component({
   selector: 'app-ranking',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, SeasonSwitcherComponent],
   templateUrl: './ranking.component.html',
   styleUrls: ['./ranking.component.css'],
 })
@@ -45,23 +39,22 @@ export class RankingComponent {
   currentUser$: Observable<User | null> = authState(this.auth);
   seasons$: Observable<Season[]> = this.seasonService.seasons$;
 
-  // null = saison en cours (défaut)
+  // null tant que l'utilisateur n'a pas navigué : on suit la saison en cours.
   private selectedSeasonId$ = new BehaviorSubject<string | null>(null);
-  selectedSeasonId = '';
 
-  rankingData$: Observable<RankingData> = combineLatest([
+  effectiveSeasonId$: Observable<string> = combineLatest([
     this.selectedSeasonId$,
     this.seasonService.currentSeason$,
-    this.seasons$,
+  ]).pipe(map(([selected, current]) => selected ?? current?.id ?? ''));
+
+  rankedUsers$: Observable<RankedUserProfile[]> = combineLatest([
+    this.effectiveSeasonId$,
+    this.seasonService.currentSeason$,
   ]).pipe(
-    switchMap(([selectedSeasonId, currentSeason, seasons]) => {
-      const seasonId = selectedSeasonId ?? currentSeason?.id;
-      if (!seasonId) return of({ users: [], seasonName: '', isCurrentSeason: true });
+    switchMap(([seasonId, currentSeason]) => {
+      if (!seasonId) return of([]);
 
       const isCurrentSeason = seasonId === currentSeason?.id;
-      const seasonName =
-        seasons.find((s) => s.id === seasonId)?.Nom ?? seasonId;
-
       const usersCollectionPath = isCurrentSeason
         ? 'users'
         : `seasons/${seasonId}/classement`;
@@ -76,18 +69,14 @@ export class RankingComponent {
           const filteredUsers = isCurrentSeason
             ? users.filter((user) => user.id !== RANKING_EXCLUDED_EMAIL)
             : users;
-          return {
-            users: this.rank(filteredUsers),
-            seasonName,
-            isCurrentSeason,
-          };
+          return this.rank(filteredUsers);
         })
       );
     })
   );
 
   selectSeason(seasonId: string): void {
-    this.selectedSeasonId$.next(seasonId || null);
+    this.selectedSeasonId$.next(seasonId);
   }
 
   private rank(users: UserProfile[]): RankedUserProfile[] {

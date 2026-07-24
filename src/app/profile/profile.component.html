@@ -60,6 +60,14 @@
         </ng-container>
       </div>
 
+      <div class="season-picker">
+        <app-season-switcher
+          [seasons]="(seasons$ | async) ?? []"
+          [selectedSeasonId]="(effectiveSeasonId$ | async) ?? ''"
+          (selectedSeasonIdChange)="selectSeason($event)"
+        ></app-season-switcher>
+      </div>
+
       <!-- Section de l'historique des inscriptions passées -->
       <div class="user-events-section">
         <h2>Mes inscriptions passées</h2>

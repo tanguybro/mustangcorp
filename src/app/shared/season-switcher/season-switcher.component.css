@@ -1,0 +1,43 @@
+.season-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 999px;
+}
+
+.season-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #262626;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+}
+
+.season-nav-btn:hover:not(:disabled) {
+  transform: scale(1.08);
+}
+
+.season-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.season-switcher-label {
+  min-width: 90px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #262626;
+}

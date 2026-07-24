@@ -1,35 +1,26 @@
 <div class="ranking-container">
   <header class="ranking-header">
     <h1>Classement</h1>
-    <select
-      class="season-select"
-      [(ngModel)]="selectedSeasonId"
-      (ngModelChange)="selectSeason($event)"
-    >
-      <option value="">Saison en cours</option>
-      <option *ngFor="let season of seasons$ | async" [value]="season.id">
-        {{ season.Nom }}
-      </option>
-    </select>
+    <app-season-switcher
+      [seasons]="(seasons$ | async) ?? []"
+      [selectedSeasonId]="(effectiveSeasonId$ | async) ?? ''"
+      (selectedSeasonIdChange)="selectSeason($event)"
+    ></app-season-switcher>
   </header>
 
   <ng-container
     *ngIf="{
-      ranking: rankingData$ | async,
+      users: rankedUsers$ | async,
       me: currentUser$ | async
     } as data; else loading"
   >
-    <p class="season-label" *ngIf="data.ranking?.seasonName as name">
-      {{ name }}
-    </p>
-
     <div
       class="ranking-list"
-      *ngIf="data.ranking && data.ranking.users.length > 0; else noUsers"
+      *ngIf="data.users && data.users.length > 0; else noUsers"
     >
       <div
         class="user-row"
-        *ngFor="let user of data.ranking!.users"
+        *ngFor="let user of data.users"
         [class.is-current-user]="user.id === data.me?.email"
       >
         <div class="user-position">

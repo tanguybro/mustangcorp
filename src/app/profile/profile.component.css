@@ -94,8 +94,16 @@
   font-weight: 500;
 }
 
+.season-picker {
+  text-align: center;
+  margin-top: 40px;
+}
+
 /* --- NOUVEAU : STYLES POUR LES SECTIONS D'ÉVÉNEMENTS --- */
 .user-events-section {
+  margin-top: 16px;
+}
+.user-events-section:first-of-type {
   margin-top: 40px;
 }
 

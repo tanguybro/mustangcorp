@@ -19,9 +19,11 @@ import {
   where,
   Timestamp,
 } from '@angular/fire/firestore';
-import { Observable, of, combineLatest } from 'rxjs';
+import { BehaviorSubject, Observable, of, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { RANKING_EXCLUDED_EMAIL } from '../shared/constants';
+import { Season, SeasonService } from '../shared/season.service';
+import { SeasonSwitcherComponent } from '../shared/season-switcher/season-switcher.component';
 
 // --- INTERFACES ---
 interface UserProfile {
@@ -42,12 +44,13 @@ interface Event {
   Date: Timestamp;
   Gagnants?: string[];
   Participants: string[];
+  Saison?: string;
 }
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SeasonSwitcherComponent],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
 })
@@ -55,12 +58,20 @@ export class ProfileComponent {
   private auth: Auth = inject(Auth);
   private firestore: Firestore = inject(Firestore);
   private cd: ChangeDetectorRef = inject(ChangeDetectorRef);
+  private seasonService = inject(SeasonService);
 
   public user$: Observable<User | null> = authState(this.auth);
   public userProfileWithRank$: Observable<FullUserProfile | null>;
   public registeredEvents$: Observable<Event[]>;
   public pastRegisteredEvents$: Observable<Event[]>;
   public wonEvents$: Observable<Event[]>;
+
+  public seasons$: Observable<Season[]> = this.seasonService.seasons$;
+  private selectedSeasonId$ = new BehaviorSubject<string>('');
+  public effectiveSeasonId$: Observable<string> = combineLatest([
+    this.selectedSeasonId$,
+    this.seasonService.currentSeason$,
+  ]).pipe(map(([selected, current]) => selected || current?.id || ''));
 
   email = '';
   password = '';
@@ -134,10 +145,14 @@ export class ProfileComponent {
       })
     );
 
-    // Événements passés auxquels l'utilisateur était inscrit (gagnés ou non)
-    this.pastRegisteredEvents$ = this.user$.pipe(
-      switchMap((user) => {
-        if (!user || !user.email) return of([]);
+    // Événements passés auxquels l'utilisateur était inscrit (gagnés ou non),
+    // filtrés sur la saison sélectionnée (en cours par défaut).
+    this.pastRegisteredEvents$ = combineLatest([
+      this.user$,
+      this.effectiveSeasonId$,
+    ]).pipe(
+      switchMap(([user, seasonId]) => {
+        if (!user || !user.email || !seasonId) return of([]);
 
         const registeredQuery = query(
           eventsCollectionRef,
@@ -151,17 +166,20 @@ export class ProfileComponent {
         ).pipe(
           map((events) =>
             events
-              .filter((event) => event.Date.toDate() < new Date())
+              .filter(
+                (event) =>
+                  event.Date.toDate() < new Date() && event.Saison === seasonId
+              )
               .sort((a, b) => b.Date.toMillis() - a.Date.toMillis())
           )
         );
       })
     );
 
-    // Événements passés que l'utilisateur a gagnés
-    this.wonEvents$ = this.user$.pipe(
-      switchMap((user) => {
-        if (!user || !user.email) return of([]);
+    // Événements que l'utilisateur a gagnés, filtrés sur la saison sélectionnée.
+    this.wonEvents$ = combineLatest([this.user$, this.effectiveSeasonId$]).pipe(
+      switchMap(([user, seasonId]) => {
+        if (!user || !user.email || !seasonId) return of([]);
 
         // 1. Requête Firestore simplifiée
         const wonQuery = query(
@@ -173,15 +191,21 @@ export class ProfileComponent {
           collectionData(wonQuery, { idField: 'id' }) as Observable<Event[]>
         ).pipe(
           // 2. Filtrage et tri côté client
-          map(
-            (events) =>
-              events
-                .filter((event) => event.Date.toDate() < new Date()) // Garde les événements passés
-                .sort((a, b) => b.Date.toMillis() - a.Date.toMillis()) // Trie par date décroissante
+          map((events) =>
+            events
+              .filter(
+                (event) =>
+                  event.Date.toDate() < new Date() && event.Saison === seasonId
+              )
+              .sort((a, b) => b.Date.toMillis() - a.Date.toMillis())
           )
         );
       })
     );
+  }
+
+  selectSeason(seasonId: string): void {
+    this.selectedSeasonId$.next(seasonId);
   }
 
   async login() {

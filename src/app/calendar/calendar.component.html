@@ -1,15 +1,10 @@
 <div class="calendar-container">
 <div class="season-picker">
-  <select
-    class="season-select"
-    [(ngModel)]="selectedSeasonId"
-    (ngModelChange)="selectSeason($event)"
-  >
-    <option value="">Saison en cours</option>
-    <option *ngFor="let season of seasons$ | async" [value]="season.id">
-      {{ season.Nom }}
-    </option>
-  </select>
+  <app-season-switcher
+    [seasons]="(seasons$ | async) ?? []"
+    [selectedSeasonId]="(effectiveSeasonId$ | async) ?? ''"
+    (selectedSeasonIdChange)="selectSeason($event)"
+  ></app-season-switcher>
 </div>
 
 <ng-container *ngIf="eventsData$ | async as data; else loading">

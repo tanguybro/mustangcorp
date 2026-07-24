@@ -1,6 +1,5 @@
 import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   trigger,
@@ -28,6 +27,7 @@ import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FREE_REGISTRATION_EMAIL } from '../shared/constants';
 import { Season, SeasonService } from '../shared/season.service';
+import { SeasonSwitcherComponent } from '../shared/season-switcher/season-switcher.component';
 
 // --- Interfaces ---
 interface UserProfile {
@@ -67,7 +67,7 @@ interface EventsData {
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, SeasonSwitcherComponent],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
   animations: [
@@ -103,7 +103,11 @@ export class CalendarComponent implements OnInit {
 
   // '' = saison en cours (défaut)
   private selectedSeasonId$ = new BehaviorSubject<string>('');
-  public selectedSeasonId = '';
+
+  public effectiveSeasonId$: Observable<string> = combineLatest([
+    this.selectedSeasonId$,
+    this.seasonService.currentSeason$,
+  ]).pipe(map(([selected, current]) => selected || current?.id || ''));
 
   ngOnInit(): void {
     this.auth.onAuthStateChanged((user) => {
