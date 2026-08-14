@@ -6,7 +6,6 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithRedirect,
-  getRedirectResult,
   signOut,
   authState,
   User,
@@ -81,13 +80,9 @@ export class ProfileComponent {
   loginError: string | null = null;
 
   constructor() {
-    // Récupère une éventuelle erreur survenue pendant la redirection vers Google
-    // (le succès, lui, est déjà géré automatiquement par authState() ci-dessus).
-    getRedirectResult(this.auth).catch((error) => {
-      console.error('Google redirect error:', error);
-      this.loginError = 'Connexion Google impossible.';
-      this.cd.detectChanges();
-    });
+    // Le résultat de la redirection Google (succès ou erreur) est géré une
+    // seule fois, au niveau racine (AppComponent) : authState() ci-dessus
+    // reflète automatiquement une connexion réussie une fois traitée là-bas.
 
     // La logique pour le profil et le classement reste la même
     this.userProfileWithRank$ = this.user$.pipe(

@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { Auth, authState, User } from '@angular/fire/auth';
+import { Auth, authState, getRedirectResult, User } from '@angular/fire/auth';
 import { Firestore, doc, docData } from '@angular/fire/firestore';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { Observable, of } from 'rxjs';
@@ -43,6 +43,16 @@ export class AppComponent implements OnInit {
   );
 
   ngOnInit(): void {
+    // Termine d'abord une éventuelle connexion Google en cours (retour de
+    // signInWithRedirect) AVANT de surveiller les mises à jour du service
+    // worker : sinon un rechargement auto pouvait interrompre Firebase en
+    // plein milieu de l'établissement de la session et la faire disparaître.
+    getRedirectResult(this.auth)
+      .catch((error) => console.error('Google redirect error:', error))
+      .finally(() => this.watchForNewVersion());
+  }
+
+  private watchForNewVersion(): void {
     // Recharge automatiquement la page dès qu'une nouvelle version est déployée,
     // pour éviter de rester bloqué sur une version en cache par le service worker.
     if (this.swUpdate.isEnabled) {
