@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   Auth,
+  GoogleAuthProvider,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   authState,
   User,
@@ -215,6 +217,17 @@ export class ProfileComponent {
     } catch (error) {
       console.error('Login error:', error);
       this.loginError = 'Email ou mot de passe incorrect.';
+      this.cd.detectChanges();
+    }
+  }
+
+  async loginWithGoogle() {
+    this.loginError = null;
+    try {
+      await signInWithPopup(this.auth, new GoogleAuthProvider());
+    } catch (error) {
+      console.error('Google login error:', error);
+      this.loginError = 'Connexion Google impossible.';
       this.cd.detectChanges();
     }
   }
