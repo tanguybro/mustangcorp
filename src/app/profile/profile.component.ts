@@ -5,7 +5,8 @@ import {
   Auth,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signOut,
   authState,
   User,
@@ -80,6 +81,14 @@ export class ProfileComponent {
   loginError: string | null = null;
 
   constructor() {
+    // Récupère une éventuelle erreur survenue pendant la redirection vers Google
+    // (le succès, lui, est déjà géré automatiquement par authState() ci-dessus).
+    getRedirectResult(this.auth).catch((error) => {
+      console.error('Google redirect error:', error);
+      this.loginError = 'Connexion Google impossible.';
+      this.cd.detectChanges();
+    });
+
     // La logique pour le profil et le classement reste la même
     this.userProfileWithRank$ = this.user$.pipe(
       switchMap((user) => {
@@ -224,7 +233,7 @@ export class ProfileComponent {
   async loginWithGoogle() {
     this.loginError = null;
     try {
-      await signInWithPopup(this.auth, new GoogleAuthProvider());
+      await signInWithRedirect(this.auth, new GoogleAuthProvider());
     } catch (error) {
       console.error('Google login error:', error);
       this.loginError = 'Connexion Google impossible.';
