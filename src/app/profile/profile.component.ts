@@ -5,6 +5,7 @@ import {
   Auth,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signInWithRedirect,
   signOut,
   authState,
@@ -228,9 +229,20 @@ export class ProfileComponent {
   async loginWithGoogle() {
     this.loginError = null;
     try {
-      await signInWithRedirect(this.auth, new GoogleAuthProvider());
-    } catch (error) {
-      console.error('Google login error:', error);
+      await signInWithPopup(this.auth, new GoogleAuthProvider());
+    } catch (error: any) {
+      // Le popup peut être bloqué par le navigateur : on retente en
+      // redirection plein écran dans ce cas précis uniquement.
+      if (error?.code === 'auth/popup-blocked') {
+        try {
+          await signInWithRedirect(this.auth, new GoogleAuthProvider());
+          return;
+        } catch (redirectError) {
+          console.error('Google redirect error:', redirectError);
+        }
+      } else {
+        console.error('Google login error:', error);
+      }
       this.loginError = 'Connexion Google impossible.';
       this.cd.detectChanges();
     }
