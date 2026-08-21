@@ -11,6 +11,10 @@
 </div>
 </header>
 
+<div class="update-banner" *ngIf="updateAvailable" (click)="reloadForUpdate()">
+  Nouvelle version disponible — appuyer pour actualiser
+</div>
+
 <!-- Le contenu de votre page s'affichera ici -->
 <main class="main-content">
 <router-outlet></router-outlet>

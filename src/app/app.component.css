@@ -56,6 +56,22 @@
 }
 /* --- FIN DES NOUVEAUX STYLES --- */
 
+.update-banner {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  width: 100%;
+  padding: 10px 16px;
+  box-sizing: border-box;
+  background-color: #262626;
+  color: #ffffff;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 999;
+}
+
 /* MODIFICATION : Ajout d'un padding-top pour ne pas être sous l'en-tête */
 .main-content {
   padding-top: var(--header-height);

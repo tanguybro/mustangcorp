@@ -36,6 +36,8 @@ export class AppComponent implements OnInit {
     map((user) => user?.email === ADMIN_EMAIL)
   );
 
+  updateAvailable = false;
+
   // Observable des données du profil Firestore (MTC)
   userProfile$: Observable<UserProfile | null> = this.user$.pipe(
     switchMap((user) => {
@@ -58,8 +60,10 @@ export class AppComponent implements OnInit {
   }
 
   private watchForNewVersion(): void {
-    // Recharge automatiquement la page dès qu'une nouvelle version est déployée,
-    // pour éviter de rester bloqué sur une version en cache par le service worker.
+    // Signale qu'une nouvelle version est disponible au lieu de recharger la
+    // page automatiquement : un rechargement forcé pouvait retomber en plein
+    // milieu d'une action en cours (connexion Google, envoi d'un formulaire...)
+    // et l'interrompre. L'utilisateur choisit quand actualiser.
     if (this.swUpdate.isEnabled) {
       this.swUpdate.versionUpdates
         .pipe(
@@ -68,8 +72,12 @@ export class AppComponent implements OnInit {
           )
         )
         .subscribe(() => {
-          this.swUpdate.activateUpdate().then(() => document.location.reload());
+          this.updateAvailable = true;
         });
     }
+  }
+
+  reloadForUpdate(): void {
+    this.swUpdate.activateUpdate().then(() => document.location.reload());
   }
 }
