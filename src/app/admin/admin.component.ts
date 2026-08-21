@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -21,6 +21,7 @@ import { Season, SeasonService } from '../shared/season.service';
 export class AdminComponent implements OnInit {
   private firestore: Firestore = inject(Firestore);
   private seasonService = inject(SeasonService);
+  private cd: ChangeDetectorRef = inject(ChangeDetectorRef);
 
   seasons$: Observable<Season[]> = this.seasonService.seasons$;
 
@@ -80,6 +81,7 @@ export class AdminComponent implements OnInit {
       this.errorMessage = "Erreur lors de la création de l'événement.";
     } finally {
       this.saving = false;
+      this.cd.detectChanges();
     }
   }
 
