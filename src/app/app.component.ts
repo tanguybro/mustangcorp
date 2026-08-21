@@ -5,7 +5,8 @@ import { Auth, authState, getRedirectResult, User } from '@angular/fire/auth';
 import { Firestore, doc, docData } from '@angular/fire/firestore';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { Observable, of } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
+import { ADMIN_EMAIL } from './shared/constants';
 
 // Interface pour les données utilisateur Firestore
 interface UserProfile {
@@ -30,6 +31,10 @@ export class AppComponent implements OnInit {
 
   // Observable de l'utilisateur connecté
   user$: Observable<User | null> = authState(this.auth);
+
+  isAdmin$: Observable<boolean> = this.user$.pipe(
+    map((user) => user?.email === ADMIN_EMAIL)
+  );
 
   // Observable des données du profil Firestore (MTC)
   userProfile$: Observable<UserProfile | null> = this.user$.pipe(

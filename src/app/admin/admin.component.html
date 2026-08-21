@@ -1,0 +1,56 @@
+<div class="admin-container">
+  <header class="admin-header">
+    <h1>Nouvel événement</h1>
+  </header>
+
+  <form class="event-form" (ngSubmit)="createEvent()">
+    <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+    <label>
+      Nom
+      <input type="text" [(ngModel)]="nom" name="nom" required />
+    </label>
+
+    <label>
+      Date et heure
+      <input type="datetime-local" [(ngModel)]="date" name="date" required />
+    </label>
+
+    <label>
+      Lieu
+      <input type="text" [(ngModel)]="lieu" name="lieu" required />
+    </label>
+
+    <div class="form-row">
+      <label>
+        Prix (€)
+        <input type="number" min="0" step="0.5" [(ngModel)]="prix" name="prix" required />
+      </label>
+
+      <label>
+        Places max
+        <input type="number" min="1" step="1" [(ngModel)]="max" name="max" required />
+      </label>
+    </div>
+
+    <label>
+      Saison
+      <select [(ngModel)]="saisonId" name="saisonId" required>
+        <option value="" disabled>Choisir une saison</option>
+        <option *ngFor="let season of seasons$ | async" [value]="season.id">
+          {{ season.Nom }}
+        </option>
+      </select>
+    </label>
+
+    <label>
+      Description
+      <textarea [(ngModel)]="description" name="description" rows="4"></textarea>
+    </label>
+
+    <button type="submit" [disabled]="saving">
+      {{ saving ? 'Création...' : "Créer l'événement" }}
+    </button>
+  </form>
+</div>

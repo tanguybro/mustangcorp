@@ -4,6 +4,8 @@ import { ShopComponent } from './shop/shop.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RankingComponent } from './ranking/ranking.component';
 import { FaqComponent } from './faq/faq.component';
+import { AdminComponent } from './admin/admin.component';
+import { adminGuard } from './shared/admin.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/calendar', pathMatch: 'full' },
@@ -12,4 +14,5 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'ranking', component: RankingComponent },
   { path: 'faq', component: FaqComponent },
+  { path: 'admin', component: AdminComponent, canActivate: [adminGuard] },
 ];

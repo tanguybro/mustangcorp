@@ -11,6 +11,9 @@ service cloud.firestore {
     function participants(data) {
       return ('Participants' in data) ? data.Participants : [];
     }
+    function isAdmin() {
+      return isSignedIn() && email() == 'tanguy.brouassin@gmail.com';
+    }
 
     match /users/{userEmail} {
       allow read: if true;
@@ -31,22 +34,26 @@ service cloud.firestore {
     match /events/{eventId} {
       allow read: if true;
 
-      // Chacun ne peut modifier que la liste des participants, en s'ajoutant
-      // ou se retirant lui-même (rien d'autre : Gagnants/Prix/Date/Max restent
-      // Console Firestore uniquement).
-      allow update: if isSignedIn()
-                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['Participants'])
-                    && (
-                      (!(email() in participants(resource.data))
-                        && email() in participants(request.resource.data)
-                        && participants(request.resource.data).size() == participants(resource.data).size() + 1)
-                      ||
-                      (email() in participants(resource.data)
-                        && !(email() in participants(request.resource.data))
-                        && participants(request.resource.data).size() == participants(resource.data).size() - 1)
-                    );
+      // L'admin peut tout créer/modifier/supprimer depuis la page /admin du site.
+      allow create, delete: if isAdmin();
 
-      allow create, delete: if false;
+      // Mise à jour : soit l'admin (tout champ, ex: marquer les Gagnants),
+      // soit n'importe quel joueur connecté mais uniquement pour s'ajouter
+      // ou se retirer lui-même de Participants (rien d'autre).
+      allow update: if isAdmin()
+                    || (
+                      isSignedIn()
+                      && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['Participants'])
+                      && (
+                        (!(email() in participants(resource.data))
+                          && email() in participants(request.resource.data)
+                          && participants(request.resource.data).size() == participants(resource.data).size() + 1)
+                        ||
+                        (email() in participants(resource.data)
+                          && !(email() in participants(request.resource.data))
+                          && participants(request.resource.data).size() == participants(resource.data).size() - 1)
+                      )
+                    );
     }
 
     match /shop/{itemId} {

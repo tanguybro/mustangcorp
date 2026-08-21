@@ -1,0 +1,116 @@
+:host {
+  --primary-color: #007aff;
+  --danger-color: #ff3b30;
+  --success-color: #34c759;
+  --background-color: #f2f2f7;
+  --card-background: #ffffff;
+  --text-primary: #1c1c1e;
+  --text-secondary: #8a8a8e;
+  --border-color: #e5e5ea;
+}
+
+.admin-container {
+  padding: 24px;
+  background-color: var(--background-color);
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+.admin-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.admin-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.event-form {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px;
+  background-color: var(--card-background);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.event-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.event-form input,
+.event-form select,
+.event-form textarea {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.event-form input:focus,
+.event-form select:focus,
+.event-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.event-form button {
+  padding: 14px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.event-form button:hover:not(:disabled) {
+  transform: scale(1.02);
+}
+
+.event-form button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.success-message {
+  color: #1a7a3a;
+  background-color: rgba(52, 199, 89, 0.12);
+  padding: 12px;
+  border-radius: 8px;
+  margin: 0;
+  font-weight: 500;
+}
+
+.error-message {
+  color: var(--danger-color);
+  background-color: rgba(255, 59, 48, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  margin: 0;
+  font-weight: 500;
+}
