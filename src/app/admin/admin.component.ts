@@ -4,8 +4,9 @@ import { FormsModule } from '@angular/forms';
 import {
   Firestore,
   Timestamp,
-  addDoc,
-  collection,
+  doc,
+  getDoc,
+  setDoc,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -64,7 +65,8 @@ export class AdminComponent implements OnInit {
 
     this.saving = true;
     try {
-      await addDoc(collection(this.firestore, 'events'), {
+      const id = await this.generateUniqueId(this.nom);
+      await setDoc(doc(this.firestore, 'events', id), {
         Nom: this.nom,
         Date: Timestamp.fromDate(new Date(this.date)),
         Lieu: this.lieu,
@@ -74,7 +76,7 @@ export class AdminComponent implements OnInit {
         Saison: this.saisonId,
         Participants: [],
       });
-      this.successMessage = `"${this.nom}" a été créé.`;
+      this.successMessage = `"${this.nom}" a été créé (id: ${id}).`;
       this.resetForm();
     } catch (error) {
       console.error('Create event error:', error);
@@ -83,6 +85,47 @@ export class AdminComponent implements OnInit {
       this.saving = false;
       this.cd.detectChanges();
     }
+  }
+
+  private static readonly ACCENTS: Record<string, string> = {
+    à: 'a',
+    â: 'a',
+    ä: 'a',
+    é: 'e',
+    è: 'e',
+    ê: 'e',
+    ë: 'e',
+    î: 'i',
+    ï: 'i',
+    ô: 'o',
+    ö: 'o',
+    ù: 'u',
+    û: 'u',
+    ü: 'u',
+    ç: 'c',
+  };
+
+  private slugify(name: string): string {
+    return name
+      .toLowerCase()
+      .split('')
+      .map((ch) => AdminComponent.ACCENTS[ch] ?? ch)
+      .join('')
+      .replace(/[^a-z0-9]+/g, '');
+  }
+
+  // Essaie le nom tel quel, puis lui ajoute 2, 3, 4... tant que l'id existe déjà.
+  private async generateUniqueId(nom: string): Promise<string> {
+    const base = this.slugify(nom);
+    let candidate = base;
+    let suffix = 2;
+
+    while ((await getDoc(doc(this.firestore, 'events', candidate))).exists()) {
+      candidate = `${base}${suffix}`;
+      suffix++;
+    }
+
+    return candidate;
   }
 
   private resetForm(): void {
