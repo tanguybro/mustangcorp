@@ -1,4 +1,20 @@
 <div class="admin-container">
+  <div class="calendar-connect">
+    <span *ngIf="isCalendarConnected" class="calendar-status connected">
+      ✔ Google Calendar connecté
+    </span>
+    <button
+      *ngIf="!isCalendarConnected"
+      type="button"
+      class="calendar-connect-btn"
+      (click)="connectCalendar()"
+      [disabled]="calendarConnecting"
+    >
+      {{ calendarConnecting ? 'Connexion...' : 'Connecter Google Calendar' }}
+    </button>
+    <p *ngIf="calendarError" class="error-message">{{ calendarError }}</p>
+  </div>
+
   <header class="admin-header">
     <h1>Nouvel événement</h1>
   </header>
@@ -34,15 +50,22 @@
       </label>
     </div>
 
-    <label>
-      Saison
-      <select [(ngModel)]="saisonId" name="saisonId" required>
-        <option value="" disabled>Choisir une saison</option>
-        <option *ngFor="let season of seasons$ | async" [value]="season.id">
-          {{ season.Nom }}
-        </option>
-      </select>
-    </label>
+    <div class="form-row">
+      <label>
+        Saison
+        <select [(ngModel)]="saisonId" name="saisonId" required>
+          <option value="" disabled>Choisir une saison</option>
+          <option *ngFor="let season of seasons$ | async" [value]="season.id">
+            {{ season.Nom }}
+          </option>
+        </select>
+      </label>
+
+      <label>
+        Durée (heures)
+        <input type="number" min="0.5" step="0.5" [(ngModel)]="dureeHeures" name="dureeHeures" />
+      </label>
+    </div>
 
     <label>
       Description
@@ -53,4 +76,35 @@
       {{ saving ? 'Création...' : "Créer l'événement" }}
     </button>
   </form>
+
+  <section class="upcoming-events">
+    <h2>Événements à venir</h2>
+    <p class="hint-text">
+      Synchronise pour pousser la liste actuelle des inscrits vers
+      l'invitation Google Calendar (crée l'invitation au passage si elle
+      n'existe pas encore).
+    </p>
+
+    <div
+      class="event-row"
+      *ngFor="let event of upcomingEvents$ | async"
+    >
+      <div class="event-row-info">
+        <span class="event-row-name">{{ event.Nom }}</span>
+        <span class="event-row-date">{{ event.Date.toDate() | date : 'd MMM y, HH:mm' }}</span>
+        <span class="event-row-participants">
+          {{ event.ParticipantNames.length > 0 ? event.ParticipantNames.join(', ') : 'Aucun inscrit' }}
+        </span>
+        <span *ngIf="syncMessage[event.id!]" class="sync-message">{{ syncMessage[event.id!] }}</span>
+      </div>
+      <button
+        type="button"
+        class="sync-button"
+        (click)="syncAttendees(event)"
+        [disabled]="syncingEventId === event.id"
+      >
+        {{ syncingEventId === event.id ? '...' : 'Synchroniser' }}
+      </button>
+    </div>
+  </section>
 </div>

@@ -16,6 +16,37 @@
   font-family: 'Inter', sans-serif;
 }
 
+.calendar-connect {
+  max-width: 480px;
+  margin: 0 auto 24px;
+  text-align: center;
+}
+
+.calendar-status.connected {
+  display: inline-block;
+  padding: 10px 16px;
+  background-color: rgba(52, 199, 89, 0.12);
+  color: #1a7a3a;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.calendar-connect-btn {
+  padding: 12px 20px;
+  background-color: var(--card-background);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.calendar-connect-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 .admin-header {
   text-align: center;
   margin-bottom: 24px;
@@ -113,4 +144,82 @@
   border-radius: 8px;
   margin: 0;
   font-weight: 500;
+}
+
+.upcoming-events {
+  max-width: 480px;
+  margin: 32px auto 0;
+}
+
+.upcoming-events h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
+}
+
+.hint-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0 0 16px 0;
+}
+
+.event-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.event-row-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.event-row-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.event-row-date {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.event-row-participants {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sync-message {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.sync-button {
+  flex-shrink: 0;
+  padding: 10px 16px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sync-button:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
