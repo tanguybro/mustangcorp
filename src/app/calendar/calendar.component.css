@@ -282,7 +282,8 @@
 /* Ajouter à mon agenda */
 .add-to-calendar {
   position: relative;
-  margin-top: 8px;
+  display: inline-block;
+  margin: 12px 0;
 }
 .add-to-calendar-button {
   background: none;
@@ -301,7 +302,7 @@
 .add-to-calendar-menu {
   position: absolute;
   top: calc(100% + 4px);
-  right: 0;
+  left: 0;
   z-index: 5;
   background-color: var(--card-background);
   border: 1px solid var(--border-color);
