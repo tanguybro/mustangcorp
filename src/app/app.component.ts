@@ -60,21 +60,38 @@ export class AppComponent implements OnInit {
   }
 
   private watchForNewVersion(): void {
-    // Signale qu'une nouvelle version est disponible au lieu de recharger la
-    // page automatiquement : un rechargement forcé pouvait retomber en plein
-    // milieu d'une action en cours (connexion Google, envoi d'un formulaire...)
-    // et l'interrompre. L'utilisateur choisit quand actualiser.
-    if (this.swUpdate.isEnabled) {
-      this.swUpdate.versionUpdates
-        .pipe(
-          filter(
-            (evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'
-          )
+    if (!this.swUpdate.isEnabled) return;
+
+    this.swUpdate.versionUpdates
+      .pipe(
+        filter(
+          (evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'
         )
-        .subscribe(() => {
-          this.updateAvailable = true;
-        });
-    }
+      )
+      .subscribe(() => {
+        this.updateAvailable = true;
+        // On recharge automatiquement dès que l'onglet passe en arrière-plan
+        // (l'utilisateur change d'appli / verrouille son téléphone) : à ce
+        // moment il ne regarde plus la page, donc aucun risque d'interrompre
+        // une action en cours (connexion Google, envoi d'un formulaire...).
+        // Le bandeau reste affiché comme filet de sécurité pour actualiser
+        // manuellement si l'onglet ne passe jamais en arrière-plan.
+        document.addEventListener(
+          'visibilitychange',
+          () => {
+            if (document.visibilityState === 'hidden') {
+              this.reloadForUpdate();
+            }
+          },
+          { once: true }
+        );
+      });
+
+    // Par défaut, le service worker ne revérifie une nouvelle version qu'au
+    // chargement de la page. Comme les utilisateurs gardent souvent l'appli
+    // ouverte, on revérifie aussi périodiquement pour détecter les mises à
+    // jour même sans redémarrage complet de l'appli.
+    setInterval(() => this.swUpdate.checkForUpdate(), 30 * 60 * 1000);
   }
 
   reloadForUpdate(): void {
