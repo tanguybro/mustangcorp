@@ -36,8 +36,6 @@ export class AppComponent implements OnInit {
     map((user) => user?.email === ADMIN_EMAIL)
   );
 
-  updateAvailable = false;
-
   // Observable des données du profil Firestore (MTC)
   userProfile$: Observable<UserProfile | null> = this.user$.pipe(
     switchMap((user) => {
@@ -69,29 +67,19 @@ export class AppComponent implements OnInit {
         )
       )
       .subscribe(() => {
-        this.updateAvailable = true;
-        // On recharge automatiquement dès que l'onglet passe en arrière-plan
-        // (l'utilisateur change d'appli / verrouille son téléphone) : à ce
-        // moment il ne regarde plus la page, donc aucun risque d'interrompre
-        // une action en cours (connexion Google, envoi d'un formulaire...).
-        // Le bandeau reste affiché comme filet de sécurité pour actualiser
-        // manuellement si l'onglet ne passe jamais en arrière-plan.
-        document.addEventListener(
-          'visibilitychange',
-          () => {
-            if (document.visibilityState === 'hidden') {
-              this.reloadForUpdate();
-            }
-          },
-          { once: true }
-        );
+        // On recharge tout de suite : la plupart des visiteurs arrivent sur
+        // le site sans l'avoir installé (Safari iPhone, Chrome Android...),
+        // donc attendre une action de leur part ne servirait à rien — ils
+        // n'ouvriraient jamais le bandeau. Comme ça se produit juste après
+        // le chargement de la page, avant toute interaction, ça n'interrompt
+        // rien de plus qu'un rafraîchissement classique de page.
+        this.reloadForUpdate();
       });
 
     // Par défaut, le service worker ne revérifie une nouvelle version qu'au
-    // chargement de la page. Comme les utilisateurs gardent souvent l'appli
-    // ouverte, on revérifie aussi périodiquement pour détecter les mises à
-    // jour même sans redémarrage complet de l'appli.
-    setInterval(() => this.swUpdate.checkForUpdate(), 30 * 60 * 1000);
+    // chargement de la page. Pour les personnes qui gardent l'onglet ouvert
+    // longtemps (ou l'appli installée), on revérifie aussi périodiquement.
+    setInterval(() => this.swUpdate.checkForUpdate(), 15 * 60 * 1000);
   }
 
   reloadForUpdate(): void {
