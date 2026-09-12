@@ -46,6 +46,17 @@
                 Complet
               </button>
             </ng-container>
+
+            <div class="add-to-calendar" *ngIf="isUserRegistered(event)">
+              <button class="add-to-calendar-button" (click)="toggleAddToCalendarMenu(event.id)">
+                📅 Ajouter à mon agenda
+              </button>
+              <div class="add-to-calendar-menu" *ngIf="addToCalendarMenuEventId === event.id">
+                <button (click)="addToGoogleCalendar(event)">Google Agenda</button>
+                <button (click)="addToIcsCalendar(event)">Apple / Outlook (.ics)</button>
+              </div>
+            </div>
+
             <div *ngIf="registrationErrors[event.id!]" class="registration-error">
               {{ registrationErrors[event.id!] }}
             </div>

@@ -11,13 +11,11 @@ import {
   orderBy,
   query,
   setDoc,
-  updateDoc,
   where,
 } from '@angular/fire/firestore';
 import { Observable, combineLatest } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { Season, SeasonService } from '../shared/season.service';
-import { GoogleCalendarService } from '../shared/google-calendar.service';
 
 interface UserProfile {
   id?: string;
@@ -29,7 +27,6 @@ interface AdminEvent {
   Nom: string;
   Date: Timestamp;
   Participants: string[];
-  GoogleCalendarEventId?: string;
 }
 
 interface UpcomingEvent extends AdminEvent {
@@ -47,7 +44,6 @@ export class AdminComponent implements OnInit {
   private firestore: Firestore = inject(Firestore);
   private seasonService = inject(SeasonService);
   private cd: ChangeDetectorRef = inject(ChangeDetectorRef);
-  private calendarService = inject(GoogleCalendarService);
 
   seasons$: Observable<Season[]> = this.seasonService.seasons$;
 
@@ -64,12 +60,7 @@ export class AdminComponent implements OnInit {
   successMessage = '';
   errorMessage = '';
 
-  calendarConnecting = false;
-  calendarError = '';
-
   upcomingEvents$!: Observable<UpcomingEvent[]>;
-  syncingEventId: string | null = null;
-  syncMessage: Record<string, string> = {};
 
   ngOnInit(): void {
     // Présélectionne la saison en cours dès qu'on la connaît.
@@ -104,24 +95,6 @@ export class AdminComponent implements OnInit {
     );
   }
 
-  get isCalendarConnected(): boolean {
-    return this.calendarService.isConnected();
-  }
-
-  async connectCalendar(): Promise<void> {
-    this.calendarError = '';
-    this.calendarConnecting = true;
-    try {
-      await this.calendarService.connect();
-    } catch (error) {
-      console.error('Calendar connect error:', error);
-      this.calendarError = 'Connexion à Google Calendar impossible.';
-    } finally {
-      this.calendarConnecting = false;
-      this.cd.detectChanges();
-    }
-  }
-
   async createEvent(): Promise<void> {
     this.successMessage = '';
     this.errorMessage = '';
@@ -143,23 +116,6 @@ export class AdminComponent implements OnInit {
       const id = await this.generateUniqueId(this.nom);
       const eventDate = new Date(this.date);
 
-      let googleCalendarEventId: string | undefined;
-      if (this.isCalendarConnected) {
-        try {
-          googleCalendarEventId = await this.calendarService.createEvent({
-            summary: `Mustang Club - ${this.nom}`,
-            description: this.description,
-            location: this.lieu,
-            startDate: eventDate,
-            durationHours: this.dureeHeures,
-          });
-        } catch (calendarError) {
-          console.error('Calendar create error:', calendarError);
-          // On continue quand même : l'événement du site n'a pas à échouer
-          // si seule la création de l'invitation Calendar échoue.
-        }
-      }
-
       await setDoc(doc(this.firestore, 'events', id), {
         Nom: this.nom,
         Date: Timestamp.fromDate(eventDate),
@@ -168,62 +124,17 @@ export class AdminComponent implements OnInit {
         Max: this.max,
         Description: this.description,
         Saison: this.saisonId,
+        DureeHeures: this.dureeHeures,
         Participants: [],
-        ...(googleCalendarEventId ? { GoogleCalendarEventId: googleCalendarEventId } : {}),
       });
 
-      this.successMessage = googleCalendarEventId
-        ? `"${this.nom}" a été créé (id: ${id}), invitation Google Calendar créée.`
-        : `"${this.nom}" a été créé (id: ${id}). Connecte Google Calendar pour créer l'invitation.`;
+      this.successMessage = `"${this.nom}" a été créé (id: ${id}).`;
       this.resetForm();
     } catch (error) {
       console.error('Create event error:', error);
       this.errorMessage = "Erreur lors de la création de l'événement.";
     } finally {
       this.saving = false;
-      this.cd.detectChanges();
-    }
-  }
-
-  async syncAttendees(event: UpcomingEvent): Promise<void> {
-    if (!event.id) return;
-    this.syncMessage[event.id] = '';
-
-    if (!this.isCalendarConnected) {
-      this.syncMessage[event.id] = 'Connecte Google Calendar avant de synchroniser.';
-      this.cd.detectChanges();
-      return;
-    }
-
-    this.syncingEventId = event.id;
-    try {
-      let calendarEventId = event.GoogleCalendarEventId;
-
-      if (!calendarEventId) {
-        // Ancien événement, ou créé sans être connecté à Calendar à l'époque :
-        // on crée l'invitation maintenant plutôt que d'échouer.
-        calendarEventId = await this.calendarService.createEvent({
-          summary: `Mustang Club - ${event.Nom}`,
-          description: '',
-          location: '',
-          startDate: event.Date.toDate(),
-          durationHours: 2,
-        });
-        await updateDoc(doc(this.firestore, 'events', event.id), {
-          GoogleCalendarEventId: calendarEventId,
-        });
-      }
-
-      await this.calendarService.updateAttendees(
-        calendarEventId,
-        event.Participants || []
-      );
-      this.syncMessage[event.id] = `Synchronisé (${(event.Participants || []).length} participant(s)).`;
-    } catch (error) {
-      console.error('Sync error:', error);
-      this.syncMessage[event.id] = 'Erreur lors de la synchronisation.';
-    } finally {
-      this.syncingEventId = null;
       this.cd.detectChanges();
     }
   }

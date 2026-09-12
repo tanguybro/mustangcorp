@@ -28,6 +28,7 @@ import { map } from 'rxjs/operators';
 import { FREE_REGISTRATION_EMAIL } from '../shared/constants';
 import { Season, SeasonService } from '../shared/season.service';
 import { SeasonSwitcherComponent } from '../shared/season-switcher/season-switcher.component';
+import { buildGoogleCalendarUrl, downloadIcsFile } from '../shared/calendar-link';
 
 // --- Interfaces ---
 interface UserProfile {
@@ -49,6 +50,7 @@ interface Event {
   Description: string;
   Gagnants?: string[];
   Saison?: string;
+  DureeHeures?: number;
 }
 
 interface EnrichedEvent extends Event {
@@ -100,6 +102,7 @@ export class CalendarComponent implements OnInit {
   public registrationErrors: Record<string, string | null> = {};
   public selectedEventId: string | null = null;
   public isTogglingRegistration: Record<string, boolean> = {};
+  public addToCalendarMenuEventId: string | null = null;
 
   // '' = saison en cours (défaut)
   private selectedSeasonId$ = new BehaviorSubject<string>('');
@@ -211,6 +214,35 @@ export class CalendarComponent implements OnInit {
 
   isRegistrationFree(): boolean {
     return this.currentUser?.email === FREE_REGISTRATION_EMAIL;
+  }
+
+  toggleAddToCalendarMenu(eventId: string | undefined): void {
+    if (!eventId) return;
+    this.addToCalendarMenuEventId =
+      this.addToCalendarMenuEventId === eventId ? null : eventId;
+  }
+
+  addToGoogleCalendar(event: Event): void {
+    this.addToCalendarMenuEventId = null;
+    const url = buildGoogleCalendarUrl({
+      title: `Mustang Club - ${event.Nom}`,
+      description: event.Description,
+      location: event.Lieu,
+      startDate: event.Date.toDate(),
+      durationHours: event.DureeHeures || 2,
+    });
+    window.open(url, '_blank');
+  }
+
+  addToIcsCalendar(event: Event): void {
+    this.addToCalendarMenuEventId = null;
+    downloadIcsFile({
+      title: `Mustang Club - ${event.Nom}`,
+      description: event.Description,
+      location: event.Lieu,
+      startDate: event.Date.toDate(),
+      durationHours: event.DureeHeures || 2,
+    });
   }
 
   async toggleRegistration(event: Event): Promise<void> {
